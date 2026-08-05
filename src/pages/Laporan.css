@@ -1,0 +1,149 @@
+/* Sembunyikan header yang khusus untuk diprint saat di layar biasa */
+.print-only-header {
+    display: none;
+}
+
+/* =========================================
+   PENGATURAN CETAK (PRINT BROWSER)
+========================================= */
+@media print {
+
+    /* Sembunyikan Sidebar, Breadcrumb, Header Toolbar, dll */
+    .no-print,
+    .sidebar,
+    .navbar,
+    .breadcrumb,
+    .page-header,
+    .toolbar {
+        display: none !important;
+    }
+
+    /* Reset semua shadow */
+    * {
+        box-shadow: none !important;
+    }
+
+    body {
+        background-color: white !important;
+        margin: 0 !important;
+        /* Padding menggantikan margin @page agar konten tidak menempel ke tepi */
+        padding: 12mm 14mm !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .main-content,
+    .data-kelas-container,
+    .content-area,
+    .print-area,
+    .table-container {
+        background-color: white !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+        box-shadow: none !important;
+        border: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Munculkan header kop surat khusus print */
+    .print-only-header {
+        display: block !important;
+        text-align: center;
+        margin: 0 auto 20px auto !important;
+        padding-bottom: 14px;
+        border-bottom: 3px double #000;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .print-only-header .print-school-name {
+        font-size: 20px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #000;
+        margin: 0 0 2px 0;
+    }
+
+    .print-only-header .print-school-address {
+        font-size: 11px;
+        color: #333;
+        margin: 0 0 10px 0;
+    }
+
+    .print-only-header .print-report-title {
+        font-size: 16px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #000;
+        margin: 10px 0 6px 0;
+    }
+
+    .print-only-header .print-filter-info {
+        font-size: 12px;
+        color: #333;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .print-only-header .print-filter-info span {
+        display: inline-block;
+        margin: 0 6px;
+    }
+
+    .print-only-header .print-date {
+        font-size: 11px;
+        color: #555;
+        margin: 6px 0 0 0;
+        font-style: italic;
+    }
+
+    /* Berikan border solid hitam pada tabel saat di print */
+    .kelas-table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+        margin-top: 12px;
+    }
+
+    .kelas-table th {
+        border: 1px solid #000 !important;
+        padding: 6px 8px !important;
+        color: #000 !important;
+        background-color: #e8e8e8 !important;
+        font-size: 11px !important;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .kelas-table td {
+        border: 1px solid #000 !important;
+        padding: 5px 8px !important;
+        color: #000 !important;
+        font-size: 11px !important;
+    }
+
+    /* Hilangkan background dari badge saat diprint */
+    .badge-status {
+        background: none !important;
+        color: #000 !important;
+        padding: 0 !important;
+        border: none !important;
+        font-size: 11px !important;
+    }
+
+    /* Pastikan tabel tidak terpotong antar halaman */
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; page-break-after: auto; }
+    thead { display: table-header-group; }
+
+    /*
+     * TRIK: margin: 0 menghilangkan area header/footer bawaan browser
+     * (tanggal, URL, nomor halaman). Body padding di atas menggantikan
+     * jarak agar konten tidak menempel ke tepi kertas.
+     */
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+}

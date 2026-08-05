@@ -1,0 +1,1090 @@
+/* DataKelas.css - Premium Modern Design matching Dashboard style */
+
+/* =========================================
+   PAGE ANIMATION
+   ========================================= */
+.data-kelas-container {
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   1. BREADCRUMB (NAVIGASI ATAS)
+   ========================================= */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.breadcrumb .clickable {
+    color: var(--primary-color);
+    cursor: pointer;
+    font-weight: 600;
+    position: relative;
+    transition: all 0.25s ease;
+    padding: 5px 10px;
+    border-radius: var(--radius-sm);
+}
+
+.breadcrumb .clickable:hover {
+    color: var(--primary-hover);
+    background-color: var(--primary-light);
+}
+
+.breadcrumb .active {
+    color: var(--text-primary);
+    font-weight: 700;
+    padding: 5px 10px;
+}
+
+.breadcrumb-icon {
+    font-size: 16px;
+    color: #cbd5e1;
+}
+
+/* =========================================
+   2. TOMBOL (ADD, BACK, SAVE)
+   ========================================= */
+.btn-add,
+.btn-back,
+.btn-save-absensi {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: var(--font-family);
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px -2px rgba(79, 70, 229, 0.35);
+}
+
+.btn-back:hover {
+    background: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.06);
+    border-color: #94a3b8;
+}
+
+.btn-save-absensi:hover {
+    background-color: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px -2px rgba(16, 185, 129, 0.35);
+}
+
+.btn-add:active,
+.btn-back:active,
+.btn-save-absensi:active {
+    transform: scale(0.96);
+    box-shadow: none;
+}
+
+/* =========================================
+   HEADER & TOMBOL ATAS
+   ========================================= */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.page-header h2 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--text-primary);
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+
+.btn-back {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #f8fafc;
+    border: 1.5px solid var(--border-color);
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: #475569;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.25s ease;
+}
+
+.btn-add {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+/* =========================================
+   TABEL
+   ========================================= */
+.table-container {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-top: 16px;
+    box-shadow: var(--shadow-md);
+}
+
+.kelas-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.kelas-table th,
+.kelas-table td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 14px;
+}
+
+.kelas-table th {
+    background-color: #f8fafc;
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.kelas-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.kelas-table tbody tr:hover {
+    background-color: rgba(79, 70, 229, 0.03);
+}
+
+/* =========================================
+   3. FOLDER KARTU (ANGKATAN & JURUSAN)
+   ========================================= */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    padding: 28px;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.folder-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    background-color: var(--surface-color);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.folder-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #4f46e5, #6366f1);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.folder-card:hover {
+    border-color: #c7d2fe;
+    box-shadow: 0 12px 24px -8px rgba(79, 70, 229, 0.15);
+    transform: translateY(-6px);
+}
+
+.folder-card:hover::before {
+    transform: scaleY(1);
+}
+
+.folder-card:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.folder-icon-wrapper {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: all 0.3s ease;
+}
+
+.folder-card:hover .folder-icon-wrapper {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #ffffff;
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* =========================================
+   4. TABEL DATA SISWA (KLIK)
+   ========================================= */
+.clickable-table tbody tr {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-left: 3px solid transparent;
+}
+
+.clickable-table tbody tr:hover {
+    background-color: rgba(79, 70, 229, 0.04);
+    transform: translateX(4px);
+    border-left: 3px solid var(--primary-color);
+    box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.06);
+}
+
+.clickable-table tbody tr:active {
+    background-color: var(--primary-light);
+    transform: translateX(2px);
+}
+
+.text-link {
+    display: inline-block;
+    color: var(--primary-color);
+    font-size: 13px;
+    font-weight: 700;
+    transition: transform 0.3s ease;
+}
+
+.clickable-table tbody tr:hover .text-link {
+    transform: translateX(6px);
+    color: var(--primary-hover);
+}
+
+/* =========================================
+   5. DETAIL SISWA & ABSENSI
+   ========================================= */
+.detail-siswa-container {
+    padding: 32px;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.profil-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    padding: 32px;
+    background: var(--surface-color);
+    border-radius: var(--radius-lg);
+    margin-bottom: 32px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+}
+
+.profil-avatar {
+    width: 100px;
+    height: 100px;
+    background: var(--primary-light);
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.profil-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.profil-info h3 {
+    margin: 0 0 16px 0;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 16px;
+    letter-spacing: -0.3px;
+}
+
+.profil-info p {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 16px 0;
+    color: #334155;
+    font-size: 15px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.profil-info p:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.profil-info p strong {
+    width: 120px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.absensi-section {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 32px;
+}
+
+.absensi-input-box,
+.absensi-rekap-box {
+    padding: 28px;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.absensi-input-box h4,
+.rekap-header h4 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 16px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* =========================================
+   6. BADGE STATUS SISWA
+   ========================================= */
+.badge-siswa {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.status-aktif {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.status-lulus {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #1d4ed8;
+    border: 1px solid rgba(147, 197, 253, 0.3);
+}
+
+.status-drop-out {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+    border: 1px solid rgba(252, 165, 165, 0.3);
+}
+
+.profil-status-control {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 2px dashed #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.profil-status-control label {
+    font-size: 14px;
+    color: #475569;
+    font-weight: 600;
+}
+
+.profil-status-control select {
+    padding: 9px 16px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border-color);
+    background-color: #f8fafc;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-family: var(--font-family);
+    cursor: pointer;
+    outline: none;
+    transition: all 0.25s ease;
+}
+
+.profil-status-control select:hover,
+.profil-status-control select:focus {
+    border-color: var(--primary-color);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* =========================================
+   7. MODAL (POP-UP)
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-card {
+    background: var(--surface-color);
+    border-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border: 1px solid #f1f5f9;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.btn-close-modal {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.btn-close-modal:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+}
+
+.modal-body {
+    padding: 24px 32px;
+}
+
+/* Input Modern */
+.modern-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: var(--font-family);
+    color: #334155;
+    background-color: #f8fafc;
+    transition: all 0.25s ease;
+    outline: none;
+}
+
+.modern-input:focus {
+    background-color: #ffffff;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.btn-cancel {
+    padding: 10px 22px;
+    background: white;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: #475569;
+    font-weight: 600;
+    font-family: var(--font-family);
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #f1f5f9;
+    color: var(--text-primary);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(6px);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================================
+   TOMBOL AKSI TABEL
+   ========================================= */
+.btn-action {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    border: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    background: white;
+}
+
+.btn-edit {
+    color: var(--primary-color);
+}
+
+.btn-edit:hover {
+    background-color: var(--primary-light);
+    border-color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.btn-delete {
+    color: var(--danger-color);
+}
+
+.btn-delete:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-color: var(--danger-color);
+    transform: scale(1.1);
+}
+
+/* =========================================
+   FORM ABSENSI
+   ========================================= */
+.form-absensi {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.form-group input,
+.form-group select {
+    padding: 11px 14px;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: var(--font-family);
+    outline: none;
+    transition: all 0.25s ease;
+    background-color: #f8fafc;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary-color);
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.btn-save-absensi {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    padding: 11px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-family: var(--font-family);
+    cursor: pointer;
+    margin-top: 8px;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    transition: all 0.25s ease;
+}
+
+.btn-save-absensi:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+}
+
+/* =========================================
+   TOMBOL IMPORT EXCEL
+   ========================================= */
+.btn-import {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 15px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.btn-import:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+}
+
+/* =========================================
+   INVENTARIS BARANG TABS
+   ========================================= */
+.inventaris-tabs {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 12px;
+    gap: 8px;
+}
+
+.tab-item {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+}
+
+.tab-item:hover {
+    background-color: rgba(79, 70, 229, 0.06);
+    color: var(--text-primary);
+}
+
+.tab-item.active {
+    color: var(--primary-color);
+    background-color: var(--primary-light);
+    font-weight: 700;
+}
+
+.tab-divider {
+    color: #cbd5e1;
+    font-weight: bold;
+}
+
+/* Riwayat Peminjaman */
+.history-card {
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+    gap: 16px;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.history-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed #e2e8f0;
+    padding-bottom: 12px;
+}
+
+.history-header h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.history-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+    color: #475569;
+    background-color: #f8fafc;
+    padding: 14px;
+    border-radius: var(--radius-sm);
+}
+
+.history-body-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+/* Aksi Tabel Riwayat Absensi */
+.actions-cell {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.actions-cell .btn-edit {
+    background-color: rgba(79, 70, 229, 0.08);
+    color: var(--primary-color);
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.actions-cell .btn-edit:hover {
+    background-color: var(--primary-light);
+}
+
+.actions-cell .btn-delete {
+    background-color: rgba(239, 68, 68, 0.08);
+    color: var(--danger-color);
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.actions-cell .btn-delete:hover {
+    background-color: rgba(239, 68, 68, 0.15);
+}
+
+/* Badge Status Siswa */
+.badge-siswa {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.badge-siswa.status-aktif {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #059669;
+}
+
+.badge-siswa.status-nonaktif {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+}
+
+/* =========================================
+   BADGE STATUS KEHADIRAN (LAPORAN)
+   ========================================= */
+.badge-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-hadir {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #059669;
+}
+
+.status-sakit {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #b45309;
+}
+
+.status-izin {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #1d4ed8;
+}
+
+.status-alfa,
+.status-alpa {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+}
+
+.fw-bold {
+    font-weight: 700;
+}
+
+/* Filter group for Laporan */
+.filter-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Content area */
+.content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* btn-confirm-delete (used in modals) */
+.btn-confirm-delete {
+    padding: 10px 22px;
+    border: none;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 700;
+    font-family: var(--font-family);
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Sembunyikan header khusus print saat tidak di print */
+.print-only-header {
+    display: none;
+}
+
+/* =========================================
+   PENGATURAN CETAK (PRINT BROWSER)
+========================================= */
+@media print {
+    /* Sembunyikan semua elemen UI (Sidebar, header, button, form, dll) */
+    .no-print,
+    .sidebar,
+    .navbar,
+    .breadcrumb,
+    .page-header,
+    .toolbar,
+    .btn-add,
+    .btn-back,
+    .btn-save-absensi,
+    .profil-status-control,
+    .absensi-section,
+    .actions-cell {
+        display: none !important;
+    }
+
+    /* Hilangkan background dan bayangan */
+    * {
+        box-shadow: none !important;
+    }
+
+    body {
+        background-color: white !important;
+        margin: 0 !important;
+        padding: 12mm 14mm !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .main-content,
+    .data-kelas-container,
+    .content-area,
+    .table-container,
+    .detail-siswa-container {
+        background-color: white !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+        box-shadow: none !important;
+        border: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Sembunyikan profil card jika sedang cetak riwayat absensi */
+    .profil-card {
+        display: none !important;
+    }
+
+    /* Header cetak */
+    .print-only-header {
+        display: block !important;
+        text-align: center;
+        margin: 0 auto 20px auto !important;
+        padding-bottom: 14px;
+        border-bottom: 3px double #000;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .print-only-header .print-school-name {
+        font-size: 20px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #000;
+        margin: 0 0 2px 0;
+    }
+
+    .print-only-header .print-school-address {
+        font-size: 11px;
+        color: #333;
+        margin: 0 0 10px 0;
+    }
+
+    .print-only-header .print-report-title {
+        font-size: 16px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #000;
+        margin: 10px 0 6px 0;
+    }
+
+    .print-only-header .print-filter-info {
+        font-size: 12px;
+        color: #333;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .print-only-header .print-filter-info span {
+        display: inline-block;
+        margin: 0 6px;
+    }
+
+    .print-only-header .print-date {
+        font-size: 11px;
+        color: #555;
+        margin: 6px 0 0 0;
+        font-style: italic;
+    }
+
+    /* Tabel Cetak */
+    .kelas-table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+        margin-top: 12px;
+    }
+
+    .kelas-table th {
+        border: 1px solid #000 !important;
+        padding: 6px 8px !important;
+        color: #000 !important;
+        background-color: #e8e8e8 !important;
+        font-size: 11px !important;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .kelas-table td {
+        border: 1px solid #000 !important;
+        padding: 5px 8px !important;
+        color: #000 !important;
+        font-size: 11px !important;
+    }
+
+    .badge-status {
+        background: none !important;
+        color: #000 !important;
+        padding: 0 !important;
+        border: none !important;
+        font-size: 11px !important;
+    }
+
+    /* Mencegah tabel terpotong */
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; page-break-after: auto; }
+    thead { display: table-header-group; }
+
+    /* Pengaturan kertas */
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+}
