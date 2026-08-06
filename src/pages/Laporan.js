@@ -18,6 +18,8 @@ const Laporan = () => {
     const [filterJurusan, setFilterJurusan] = useState('');
     const [filterTanggal, setFilterTanggal] = useState('');
     const [filterBulan, setFilterBulan] = useState('');
+    const [filterSemester, setFilterSemester] = useState('');
+    const [filterTahun, setFilterTahun] = useState(new Date().getFullYear().toString());
     const [searchTerm, setSearchTerm] = useState('');
 
     // --- STATE EDIT ABSENSI ---
@@ -97,6 +99,10 @@ const Laporan = () => {
 
             if (filterTanggal) params.append('tanggal', filterTanggal);
             if (filterBulan) params.append('bulan', filterBulan);
+            if (filterSemester && filterTahun) {
+                params.append('semester', filterSemester);
+                params.append('tahun', filterTahun);
+            }
             if (filterJurusan) params.append('classroom_id', filterJurusan);
             if (filterAngkatan) params.append('batch_id', filterAngkatan);
 
@@ -127,7 +133,7 @@ const Laporan = () => {
 
     useEffect(() => {
         // Jangan fetch tanpa filter apapun
-        const hasFilter = filterTanggal || filterBulan || filterJurusan || filterAngkatan;
+        const hasFilter = filterTanggal || filterBulan || filterJurusan || filterAngkatan || filterSemester;
         if (!hasFilter) {
             if (!isFirstLoad) {
                 // Filter dihapus semua, kosongkan data
@@ -139,7 +145,7 @@ const Laporan = () => {
         setIsFirstLoad(false);
         fetchLaporan();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filterTanggal, filterBulan, filterJurusan, filterAngkatan]);
+    }, [filterTanggal, filterBulan, filterJurusan, filterAngkatan, filterSemester, filterTahun]);
 
     // FILTER SISWA BERDASARKAN SEARCH BAR (NAMA / NISN)
     const filteredLaporan = laporan.filter(item => {
@@ -307,7 +313,10 @@ const Laporan = () => {
                             value={filterTanggal}
                             onChange={(e) => {
                                 setFilterTanggal(e.target.value);
-                                if (e.target.value) setFilterBulan('');
+                                if (e.target.value) {
+                                    setFilterBulan('');
+                                    setFilterSemester('');
+                                }
                             }}
                             style={{ width: '100%' }}
                         />
@@ -324,10 +333,45 @@ const Laporan = () => {
                             value={filterBulan}
                             onChange={(e) => {
                                 setFilterBulan(e.target.value);
-                                if (e.target.value) setFilterTanggal('');
+                                if (e.target.value) {
+                                    setFilterTanggal('');
+                                    setFilterSemester('');
+                                }
                             }}
                             style={{ width: '100%' }}
                         />
+                    </div>
+
+                    {/* 5.5 BERDASARKAN SEMESTER */}
+                    <div className="filter-group">
+                        <label style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: '700', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <FiFilter /> Berdasarkan Semester
+                        </label>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            <select
+                                className="modern-input"
+                                value={filterSemester}
+                                onChange={(e) => {
+                                    setFilterSemester(e.target.value);
+                                    if (e.target.value) {
+                                        setFilterTanggal('');
+                                        setFilterBulan('');
+                                    }
+                                }}
+                                style={{ flex: 1, padding: '12px' }}
+                            >
+                                <option value="">Semua</option>
+                                <option value="ganjil">Ganjil (Jul - Des)</option>
+                                <option value="genap">Genap (Jan - Jun)</option>
+                            </select>
+                            <input
+                                type="number"
+                                className="modern-input"
+                                value={filterTahun}
+                                onChange={(e) => setFilterTahun(e.target.value)}
+                                style={{ width: '80px', padding: '12px 8px' }}
+                            />
+                        </div>
                     </div>
 
                     {/* 6. CARI SISWA */}
@@ -359,8 +403,9 @@ const Laporan = () => {
                             {currentJurusanObj && <span>| Jurusan: <strong>{currentJurusanObj.nama_jurusan || currentJurusanObj.name}</strong></span>}
                             {filterTanggal && <span>| Tanggal: <strong>{filterTanggal}</strong></span>}
                             {filterBulan && <span>| Bulan: <strong>{filterBulan}</strong></span>}
+                            {filterSemester && <span>| Semester: <strong>{filterSemester === 'ganjil' ? 'Ganjil (Jul-Des)' : 'Genap (Jan-Jun)'} {filterTahun}</strong></span>}
                             {searchTerm && <span>| Pencarian: <strong>"{searchTerm}"</strong></span>}
-                            {!filterTanggal && !filterBulan && !currentAngkatanObj && !currentJurusanObj && <span>Semua Riwayat Waktu</span>}
+                            {!filterTanggal && !filterBulan && !filterSemester && !currentAngkatanObj && !currentJurusanObj && <span>Semua Riwayat Waktu</span>}
                         </p>
                         <p className="print-date">Dicetak pada: {new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
                     </div>
