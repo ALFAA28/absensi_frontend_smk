@@ -244,3 +244,28 @@
   object-fit: contain;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
+
+/* Responsif untuk Mobile */
+@media (max-width: 600px) {
+  .login-container {
+    padding: 12px;
+  }
+
+  .login-card {
+    padding: 65px 20px 24px 20px;
+    width: 100%;
+  }
+
+  .logo-wrapper {
+    top: -55px;
+  }
+
+  .overlapping-logo {
+    width: 110px;
+    height: 110px;
+  }
+
+  .login-header h2 {
+    font-size: 1.6rem;
+  }
+}

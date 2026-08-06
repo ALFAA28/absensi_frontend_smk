@@ -34,9 +34,11 @@ function App() {
             <div className="app-container">
               <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
               <main className={`main-content ${!isSidebarOpen ? 'expanded' : ''}`}>
-                <button className="mobile-menu-btn" onClick={toggleSidebar} title="Toggle Sidebar">
-                  <FiMenu />
-                </button>
+                {!isSidebarOpen && (
+                  <button className="mobile-menu-btn" onClick={toggleSidebar} title="Buka Sidebar">
+                    <FiMenu />
+                  </button>
+                )}
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/datakelas" element={<DataKelas />} />
