@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { FiHome, FiUsers, FiLogOut, FiSettings, FiBox, FiKey, FiFileText } from 'react-icons/fi';
 import './Sidebar.css';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const role = localStorage.getItem('role'); // Mengambil role yang sedang login
 
@@ -13,7 +13,9 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="sidebar">
+    <>
+      {isOpen && <div className="sidebar-overlay" onClick={toggleSidebar}></div>}
+      <div className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-header">
         <h2>Absensi App</h2>
       </div>
@@ -69,6 +71,7 @@ const Sidebar = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 

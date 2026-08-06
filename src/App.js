@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
@@ -12,9 +12,15 @@ import UbahPassword from './pages/UbahPassword';
 import Laporan from './pages/Laporan';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FiMenu } from 'react-icons/fi';
 import './App.css';
 
 function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
   return (
     <Router>
       <Routes>
@@ -26,8 +32,11 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/*" element={
             <div className="app-container">
-              <Sidebar />
+              <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
               <main className="main-content">
+                <button className="mobile-menu-btn" onClick={toggleSidebar}>
+                  <FiMenu />
+                </button>
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/datakelas" element={<DataKelas />} />
