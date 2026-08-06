@@ -19,8 +19,13 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    setIsSidebarOpen(prev => !prev);
   };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
     <Router>
       <Routes>
@@ -32,7 +37,7 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/*" element={
             <div className="app-container">
-              <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+              <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} closeSidebar={closeSidebar} />
               <main className={`main-content ${!isSidebarOpen ? 'expanded' : ''}`}>
                 {!isSidebarOpen && (
                   <button className="mobile-menu-btn" onClick={toggleSidebar} title="Buka Sidebar">
