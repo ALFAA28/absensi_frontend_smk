@@ -12,6 +12,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     navigate('/login');
   };
 
+  const handleMenuClick = () => {
+    if (window.innerWidth <= 768) {
+      toggleSidebar();
+    }
+  };
+
   return (
     <>
       {isOpen && <div className="sidebar-overlay" onClick={toggleSidebar}></div>}
@@ -24,14 +30,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       </div>
       <nav className="sidebar-nav">
         {/* Dashboard bisa diakses semua role */}
-        <NavLink to="/" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'} end>
+        <NavLink to="/" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'} end onClick={handleMenuClick}>
           <FiHome className="nav-icon" />
           <span>Dashboard</span>
         </NavLink>
 
         {/* Data Kelas & Absensi MUNCUL untuk Admin, Wali Kelas, Guru Mapel, dan Guru */}
         {(role === 'admin' || role === 'wali_kelas' || role === 'guru_mapel' || role === 'guru') && (
-          <NavLink to="/DataKelas" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+          <NavLink to="/DataKelas" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'} onClick={handleMenuClick}>
             <FiUsers className="nav-icon" />
             <span>Data Kelas & Absensi</span>
           </NavLink>
@@ -39,7 +45,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
         {/* Manajemen Akun HANYA MUNCUL untuk Admin */}
         {role === 'admin' && (
-          <NavLink to="/manajemen-akun" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+          <NavLink to="/manajemen-akun" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'} onClick={handleMenuClick}>
             <FiSettings className="nav-icon" />
             <span>Manajemen Akun</span>
           </NavLink>
@@ -47,7 +53,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
         {/* Laporan HANYA MUNCUL untuk Admin */}
         {role === 'admin' && (
-          <NavLink to="/laporan" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+          <NavLink to="/laporan" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"} onClick={handleMenuClick}>
             <FiFileText className="nav-icon" />
             <span>Laporan</span>
           </NavLink>
@@ -55,14 +61,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
         {/* Inventaris Barang MUNCUL untuk Admin dan Sarpras */}
         {role === 'sarpras' && (
-          <NavLink to="/inventaris-barang" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+          <NavLink to="/inventaris-barang" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'} onClick={handleMenuClick}>
             <FiBox className="nav-icon" />
             <span>Inventaris Barang</span>
           </NavLink>
         )}
       </nav>
 
-      <NavLink to="/ubah-password" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+      <NavLink to="/ubah-password" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'} onClick={handleMenuClick}>
         <FiKey className="nav-icon" />
         <span>Ubah Password</span>
       </NavLink>
