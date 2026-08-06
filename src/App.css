@@ -127,11 +127,50 @@ body {
 }
 
 @media (max-width: 768px) {
-  .main-content {
-    margin-left: 0;
-    padding: 16px;
+  /* --- GLOBAL MOBILE SCALING --- */
+  /* Perkecil ukuran dasar agar semua elemen terlihat lebih jauh (tidak terlalu dekat) */
+  html {
+    font-size: 14px;
   }
   
+  body {
+    font-size: 13px;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 12px 10px; /* Padding utama lebih kecil */
+  }
+  
+  /* Perkecil ukuran form & input */
+  input, select, textarea {
+    font-size: 13px !important;
+    padding: 8px 12px !important;
+  }
+
+  /* Perkecil tombol-tombol */
+  button, .btn-add, .btn-back, .btn-import, .btn-save-absensi, .btn-login, .btn-cancel, .btn-confirm-delete {
+    font-size: 13px !important;
+    padding: 8px 16px !important;
+  }
+
+  /* Perkecil badge (status hadir, aktif, dsb) */
+  .badge, .badge-siswa, .badge-status, .badge-pill {
+    padding: 3px 10px !important;
+    font-size: 11px !important;
+  }
+
+  /* Judul halaman sedikit diperkecil */
+  h2 {
+    font-size: 18px !important;
+  }
+  h3 {
+    font-size: 16px !important;
+  }
+  h4 {
+    font-size: 14px !important;
+  }
+
   .mobile-menu-btn {
     display: flex;
     align-items: center;
@@ -139,10 +178,10 @@ body {
     background: var(--surface-color);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
-    padding: 10px;
-    margin-bottom: 20px;
+    padding: 8px 12px !important;
+    margin-bottom: 16px;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 20px !important;
     color: var(--text-primary);
     box-shadow: var(--shadow-sm);
     width: max-content;
@@ -154,3 +193,4 @@ body {
     color: var(--primary-color);
   }
 }
+
