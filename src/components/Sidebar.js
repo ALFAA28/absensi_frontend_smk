@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FiHome, FiUsers, FiLogOut, FiSettings, FiBox, FiKey, FiFileText } from 'react-icons/fi';
+import { FiHome, FiUsers, FiLogOut, FiSettings, FiBox, FiKey, FiFileText, FiMenu } from 'react-icons/fi';
 import './Sidebar.css';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
@@ -18,6 +18,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       <div className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-header">
         <h2>Absensi App</h2>
+        <button className="sidebar-burger" onClick={toggleSidebar} title="Tutup Sidebar">
+          <FiMenu />
+        </button>
       </div>
       <nav className="sidebar-nav">
         {/* Dashboard bisa diakses semua role */}
