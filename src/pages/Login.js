@@ -68,7 +68,7 @@ const Login = () => {
       <div className="login-card">
         {/* LOGO MENGGANTUNG DI ATAS CARD */}
         <div className="logo-wrapper">
-          <img src="/IMG_03611.PNG" alt="Logo SMK NU Donomulyo" className="overlapping-logo" />
+          <img src="/IMG_03611.png" alt="Logo SMK NU Donomulyo" className="overlapping-logo" />
         </div>
         <div className="login-header">
 
