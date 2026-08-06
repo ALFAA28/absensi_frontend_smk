@@ -392,8 +392,12 @@
     }
 
     .btn-add, .btn-back, .btn-import {
-        width: 100%;
-        justify-content: center;
+        width: auto;
+        padding: 8px 14px;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
     }
 
     .card-grid {
