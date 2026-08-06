@@ -401,3 +401,33 @@
     transform: translateY(0);
   }
 }
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 768px) {
+  .manajemen-akun {
+    padding: 16px;
+  }
+  
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .toolbar {
+    flex-direction: column;
+    align-items:stretch;
+  }
+  
+  .search-box {
+    width: 100%;
+  }
+  
+  .filter-box {
+    width: 100%;
+  }
+  
+  .filter-box select {
+    width: 100%;
+  }
+}

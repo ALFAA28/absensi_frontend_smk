@@ -376,6 +376,35 @@
 }
 
 @media (max-width: 768px) {
+    .data-kelas-container {
+        padding: 0;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .header-left {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .btn-add, .btn-back, .btn-import {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .card-grid {
+        grid-template-columns: 1fr;
+        padding: 16px;
+    }
+
+    .detail-siswa-container {
+        padding: 16px;
+    }
+
     .absensi-section {
         grid-template-columns: 1fr;
     }
@@ -384,6 +413,7 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
+        padding: 20px;
     }
     
     .profil-info h3 {
