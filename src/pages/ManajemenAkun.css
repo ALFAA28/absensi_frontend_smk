@@ -100,7 +100,7 @@
   padding: 13px 14px 13px 44px;
   border: 1.5px solid var(--border-color);
   border-radius: var(--radius-md);
-  font-size: 0.95rem;
+  font-size: 16px; /* Prevent iOS zoom */
   font-family: var(--font-family);
   background-color: var(--surface-color);
   color: var(--text-primary);
@@ -130,7 +130,7 @@
   padding: 13px 20px 13px 44px;
   border: 1.5px solid var(--border-color);
   border-radius: var(--radius-md);
-  font-size: 0.95rem;
+  font-size: 16px; /* Prevent iOS zoom */
   font-family: var(--font-family);
   background-color: var(--surface-color);
   color: var(--text-primary);
