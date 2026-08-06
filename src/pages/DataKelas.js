@@ -179,22 +179,44 @@ const DataKelas = () => {
 
     useEffect(() => {
         fetchAllData();
+        
+        // Initialize current state in history
+        window.history.replaceState({ view: 'angkatan', angkatan: null, jurusan: null, siswa: null }, '');
+
+        const handlePopState = (event) => {
+            if (event.state && event.state.view) {
+                setCurrentView(event.state.view);
+                setSelectedAngkatan(event.state.angkatan || null);
+                setSelectedJurusan(event.state.jurusan || null);
+                setSelectedSiswa(event.state.siswa || null);
+            } else {
+                setCurrentView('angkatan');
+                setSelectedAngkatan(null);
+                setSelectedJurusan(null);
+                setSelectedSiswa(null);
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
     }, []);
 
-    // --- FUNGSI NAVIGASI ---
     const handleMasukJurusan = (angkatan) => {
+        window.history.pushState({ view: 'jurusan', angkatan, jurusan: null, siswa: null }, '');
         setSelectedAngkatan(angkatan);
         setCurrentView('jurusan');
         setSearchTerm('');
     };
 
     const handleMasukSiswa = (jurusan) => {
+        window.history.pushState({ view: 'siswa', angkatan: selectedAngkatan, jurusan, siswa: null }, '');
         setSelectedJurusan(jurusan);
         setCurrentView('siswa');
         setSearchTerm('');
     };
 
     const handleMasukDetailSiswa = (siswa) => {
+        window.history.pushState({ view: 'detail_siswa', angkatan: selectedAngkatan, jurusan: selectedJurusan, siswa }, '');
         setSelectedSiswa(siswa);
         setCurrentView('detail_siswa');
         setSearchTerm('');
@@ -203,17 +225,7 @@ const DataKelas = () => {
     };
 
     const handleKembali = () => {
-        if (currentView === 'detail_siswa') {
-            setCurrentView('siswa');
-            setSelectedSiswa(null);
-        } else if (currentView === 'siswa') {
-            setCurrentView('jurusan');
-            setSelectedJurusan(null);
-        } else if (currentView === 'jurusan') {
-            setCurrentView('angkatan');
-            setSelectedAngkatan(null);
-        }
-        setSearchTerm('');
+        window.history.back();
     };
 
     const handleUbahStatusSiswa = async (siswaId, newStatus, newKeterangan = null) => {
