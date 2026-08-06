@@ -12,6 +12,8 @@
   flex-direction: column;
   z-index: 100;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-100%);
 }
 
 .sidebar-header {
@@ -102,30 +104,10 @@
   transform: translateX(2px);
 }
 
-/* Mobile Responsiveness */
-.sidebar-overlay {
-  display: none;
+.sidebar.open {
+  transform: translateX(0);
 }
 
-@media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .sidebar.open {
-    transform: translateX(0);
-  }
-  
-  .sidebar-overlay {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 90;
-    backdrop-filter: blur(2px);
-  }
+.sidebar-overlay {
+  display: none !important;
 }

@@ -16,7 +16,7 @@ import { FiMenu } from 'react-icons/fi';
 import './App.css';
 
 function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -33,8 +33,8 @@ function App() {
           <Route path="/*" element={
             <div className="app-container">
               <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-              <main className="main-content">
-                <button className="mobile-menu-btn" onClick={toggleSidebar}>
+              <main className={`main-content ${!isSidebarOpen ? 'expanded' : ''}`}>
+                <button className="mobile-menu-btn" onClick={toggleSidebar} title="Toggle Sidebar">
                   <FiMenu />
                 </button>
                 <Routes>
