@@ -1,29 +1,16 @@
-import React, { useState } from 'react';
-import { FiPlus, FiSearch, FiEdit2, FiTrash2, FiBox, FiCheckCircle, FiUpload, FiClock } from 'react-icons/fi';
+import React, { useState, useEffect, useCallback } from 'react';
+import { FiPlus, FiSearch, FiEdit2, FiTrash2, FiBox, FiCheckCircle, FiUpload, FiClock, FiLoader } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import { API_URL } from '../config';
 
 import './DataKelas.css';
 
 const InventarisBarang = () => {
     const [activeTab, setActiveTab] = useState('barang'); // 'barang' | 'peminjaman'
+    const [loading, setLoading] = useState(false);
 
-    const [dataBarang, setDataBarang] = useState([
-        { id: 1, kode: 'INV-001', nama: 'Proyektor Epson', kategori: 'Elektronik', jumlah: 5, kondisi: 'Baik' },
-        { id: 2, kode: 'INV-002', nama: 'Papan Tulis Kaca', kategori: 'Furniture', jumlah: 12, kondisi: 'Baik' },
-    ]);
-
-    const [dataPeminjaman, setDataPeminjaman] = useState([
-        {
-            id: 101,
-            barang_id: 1,
-            nama_barang: 'Proyektor Epson',
-            nama_peminjam: 'Budi Santoso',
-            tanggal_pinjam: '2026-07-20',
-            jumlah: 1,
-            keterangan: 'Untuk presentasi kelas 10 RPL 1',
-            status: 'Sedang Dipinjam'
-        }
-    ]);
+    const [dataBarang, setDataBarang] = useState([]);
+    const [dataPeminjaman, setDataPeminjaman] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -32,8 +19,50 @@ const InventarisBarang = () => {
     const [formData, setFormData] = useState({ id: null, kode: '', nama: '', kategori: 'Elektronik', jumlah: 1, kondisi: 'Baik' });
 
     const [showModalPinjam, setShowModalPinjam] = useState(false);
-    // State form peminjaman ditambahkan keterangan
-    const [formPinjam, setFormPinjam] = useState({ barang_id: null, nama_barang: '', nama_peminjam: '', tanggal_pinjam: '', jumlah: 1, keterangan: '' });
+    const [formPinjam, setFormPinjam] = useState({ inventaris_id: null, nama_barang: '', nama_peminjam: '', tanggal_pinjam: '', jumlah: 1, keterangan: '' });
+
+    // Helper: get auth headers
+    const getHeaders = () => ({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    });
+
+    // ========================
+    // FETCH DATA DARI API
+    // ========================
+
+    const fetchBarang = useCallback(async () => {
+        try {
+            const res = await fetch(`${API_URL}/inventaris`, { headers: getHeaders() });
+            if (!res.ok) throw new Error('Gagal mengambil data barang');
+            const data = await res.json();
+            setDataBarang(data);
+        } catch (err) {
+            console.error(err);
+            toast.error('Gagal memuat data barang');
+        }
+    }, []);
+
+    const fetchPeminjaman = useCallback(async () => {
+        try {
+            const res = await fetch(`${API_URL}/peminjaman`, { headers: getHeaders() });
+            if (!res.ok) throw new Error('Gagal mengambil data peminjaman');
+            const data = await res.json();
+            setDataPeminjaman(data);
+        } catch (err) {
+            console.error(err);
+            toast.error('Gagal memuat data peminjaman');
+        }
+    }, []);
+
+    useEffect(() => {
+        setLoading(true);
+        Promise.all([fetchBarang(), fetchPeminjaman()]).finally(() => setLoading(false));
+    }, [fetchBarang, fetchPeminjaman]);
+
+    // ========================
+    // FILTER
+    // ========================
 
     const filteredBarang = dataBarang.filter(b =>
         b.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -42,8 +71,12 @@ const InventarisBarang = () => {
 
     const filteredPeminjaman = dataPeminjaman.filter(p =>
         p.nama_peminjam.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.nama_barang.toLowerCase().includes(searchTerm.toLowerCase())
+        (p.inventaris?.nama || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    // ========================
+    // CRUD BARANG
+    // ========================
 
     const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -59,35 +92,76 @@ const InventarisBarang = () => {
         setShowModal(true);
     };
 
-    const handleSimpanBarang = (e) => {
+    const handleSimpanBarang = async (e) => {
         e.preventDefault();
-        if (isEditMode) {
-            setDataBarang(dataBarang.map(b => b.id === formData.id ? formData : b));
-            toast.success("Data barang berhasil diperbarui!");
-        } else {
-            setDataBarang([...dataBarang, { ...formData, id: Date.now() }]);
-            toast.success("Data barang berhasil ditambahkan!");
+        setLoading(true);
+        try {
+            const url = isEditMode ? `${API_URL}/inventaris/${formData.id}` : `${API_URL}/inventaris`;
+            const method = isEditMode ? 'PUT' : 'POST';
+
+            const res = await fetch(url, {
+                method,
+                headers: getHeaders(),
+                body: JSON.stringify({
+                    kode: formData.kode,
+                    nama: formData.nama,
+                    kategori: formData.kategori,
+                    jumlah: parseInt(formData.jumlah),
+                    kondisi: formData.kondisi,
+                }),
+            });
+
+            const result = await res.json();
+
+            if (!res.ok) {
+                // Tampilkan pesan validasi dari Laravel
+                if (result.errors) {
+                    const firstError = Object.values(result.errors)[0][0];
+                    throw new Error(firstError);
+                }
+                throw new Error(result.message || 'Gagal menyimpan data');
+            }
+
+            toast.success(isEditMode ? "Data barang berhasil diperbarui!" : "Data barang berhasil ditambahkan!");
+            setShowModal(false);
+            await fetchBarang();
+        } catch (err) {
+            toast.error(err.message);
+        } finally {
+            setLoading(false);
         }
-        setShowModal(false);
     };
 
-    const handleHapusBarang = (id, nama) => {
-        if (window.confirm(`Yakin ingin menghapus ${nama}?`)) {
-            setDataBarang(dataBarang.filter(b => b.id !== id));
+    const handleHapusBarang = async (id, nama) => {
+        if (!window.confirm(`Yakin ingin menghapus ${nama}?`)) return;
+
+        setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/inventaris/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (!res.ok) throw new Error('Gagal menghapus barang');
             toast.success("Data barang dihapus!");
+            await fetchBarang();
+        } catch (err) {
+            toast.error(err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
-    // --- FUNGSI BUKA MODAL PINJAM ---
+    // ========================
+    // PEMINJAMAN
+    // ========================
+
     const bukaModalPinjam = (barang) => {
         if (barang.jumlah <= 0) return toast.error("Stok barang habis!");
 
-        // Ambil tanggal hari ini secara otomatis
         const hariIni = new Date().toISOString().split('T')[0];
 
-        // Set state agar data otomatis terisi (nama barang & tanggal)
         setFormPinjam({
-            barang_id: barang.id,
+            inventaris_id: barang.id,
             nama_barang: barang.nama,
             nama_peminjam: '',
             tanggal_pinjam: hariIni,
@@ -97,37 +171,56 @@ const InventarisBarang = () => {
         setShowModalPinjam(true);
     };
 
-    // --- FUNGSI SIMPAN PEMINJAMAN ---
-    const handleSimpanPeminjaman = (e) => {
+    const handleSimpanPeminjaman = async (e) => {
         e.preventDefault();
-        const barangTerkait = dataBarang.find(b => b.id === formPinjam.barang_id);
+        setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/peminjaman`, {
+                method: 'POST',
+                headers: getHeaders(),
+                body: JSON.stringify({
+                    inventaris_id: formPinjam.inventaris_id,
+                    nama_peminjam: formPinjam.nama_peminjam,
+                    tanggal_pinjam: formPinjam.tanggal_pinjam,
+                    jumlah: parseInt(formPinjam.jumlah),
+                    keterangan: formPinjam.keterangan,
+                }),
+            });
 
-        if (formPinjam.jumlah > barangTerkait.jumlah) {
-            return toast.error("Jumlah pinjam melebihi stok tersedia!");
+            const result = await res.json();
+            if (!res.ok) throw new Error(result.message || 'Gagal menyimpan peminjaman');
+
+            toast.success("Peminjaman berhasil dicatat!");
+            setShowModalPinjam(false);
+            setActiveTab('peminjaman');
+            setSearchTerm('');
+            await Promise.all([fetchBarang(), fetchPeminjaman()]);
+        } catch (err) {
+            toast.error(err.message);
+        } finally {
+            setLoading(false);
         }
-
-        const pinjamBaru = { ...formPinjam, id: Date.now(), status: 'Sedang Dipinjam' };
-        setDataPeminjaman([pinjamBaru, ...dataPeminjaman]); // Data baru di atas
-
-        // Kurangi stok dari database state
-        setDataBarang(dataBarang.map(b => b.id === formPinjam.barang_id ? { ...b, jumlah: b.jumlah - formPinjam.jumlah } : b));
-
-        toast.success("Peminjaman berhasil dicatat!");
-        setShowModalPinjam(false);
-        setActiveTab('peminjaman');
-        setSearchTerm('');
     };
 
-    // --- FUNGSI KEMBALIKAN BARANG ---
-    const handleKembalikanBarang = (pinjam) => {
-        if (window.confirm(`Konfirmasi pengembalian barang oleh ${pinjam.nama_peminjam}?`)) {
-            // Ubah status di riwayat
-            setDataPeminjaman(dataPeminjaman.map(p => p.id === pinjam.id ? { ...p, status: 'Dikembalikan' } : p));
+    const handleKembalikanBarang = async (pinjam) => {
+        if (!window.confirm(`Konfirmasi pengembalian barang oleh ${pinjam.nama_peminjam}?`)) return;
 
-            // Tambahkan stok kembali ke database state
-            setDataBarang(dataBarang.map(b => b.id === pinjam.barang_id ? { ...b, jumlah: parseInt(b.jumlah) + parseInt(pinjam.jumlah) } : b));
+        setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/peminjaman/${pinjam.id}/kembalikan`, {
+                method: 'PUT',
+                headers: getHeaders(),
+            });
+
+            const result = await res.json();
+            if (!res.ok) throw new Error(result.message || 'Gagal mengembalikan barang');
 
             toast.success("Status diperbarui: Barang dikembalikan!");
+            await Promise.all([fetchBarang(), fetchPeminjaman()]);
+        } catch (err) {
+            toast.error(err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -139,7 +232,7 @@ const InventarisBarang = () => {
                 </div>
             </div>
 
-            {/* TAB NAVIGASI BARU */}
+            {/* TAB NAVIGASI */}
             <div className="inventaris-tabs">
                 <div className={`tab-item ${activeTab === 'barang' ? 'active' : ''}`} onClick={() => { setActiveTab('barang'); setSearchTerm(''); }}>
                     Daftar Barang
@@ -170,8 +263,16 @@ const InventarisBarang = () => {
                 )}
             </div>
 
+            {/* LOADING INDICATOR */}
+            {loading && (
+                <div style={{ textAlign: 'center', padding: '20px', color: 'var(--text-secondary)' }}>
+                    <FiLoader style={{ animation: 'spin 1s linear infinite', fontSize: '24px' }} />
+                    <p style={{ marginTop: '8px' }}>Memuat data...</p>
+                </div>
+            )}
+
             {/* KONTEN TAB: DAFTAR BARANG */}
-            {activeTab === 'barang' ? (
+            {!loading && activeTab === 'barang' ? (
                 <div className="table-container">
                     <table className="kelas-table">
                         <thead>
@@ -210,7 +311,7 @@ const InventarisBarang = () => {
                         </tbody>
                     </table>
                 </div>
-            ) : (
+            ) : !loading && (
                 /* KONTEN TAB: RIWAYAT PEMINJAMAN (BENTUK CARD) */
                 <div className="card-grid">
                     {filteredPeminjaman.length === 0 ? (
@@ -229,7 +330,7 @@ const InventarisBarang = () => {
                                 <div className="history-body">
                                     <div className="history-body-row">
                                         <FiBox style={{ color: 'var(--info-color)', marginTop: '2px' }} />
-                                        <span><strong>Barang:</strong> {pinjam.nama_barang} ({pinjam.jumlah} unit)</span>
+                                        <span><strong>Barang:</strong> {pinjam.inventaris?.nama || 'N/A'} ({pinjam.jumlah} unit)</span>
                                     </div>
                                     <div className="history-body-row">
                                         <FiClock style={{ color: 'var(--warning-color)', marginTop: '2px' }} />
@@ -273,7 +374,6 @@ const InventarisBarang = () => {
                                 </div>
                                 <div>
                                     <label>Tanggal Pinjam</label>
-                                    {/* Tanggal dibuat otomatis dan tidak bisa diubah */}
                                     <input type="date" value={formPinjam.tanggal_pinjam} disabled className="modern-input" style={{ backgroundColor: 'var(--bg-color)', cursor: 'not-allowed', color: 'var(--text-secondary)' }} />
                                 </div>
                             </div>
@@ -286,7 +386,7 @@ const InventarisBarang = () => {
 
                             <div className="form-group">
                                 <label>Jumlah Pinjam</label>
-                                <input type="number" min="1" max={dataBarang.find(b => b.id === formPinjam.barang_id)?.jumlah} value={formPinjam.jumlah} onChange={(e) => setFormPinjam({ ...formPinjam, jumlah: parseInt(e.target.value) })} required className="modern-input" />
+                                <input type="number" min="1" max={dataBarang.find(b => b.id === formPinjam.inventaris_id)?.jumlah} value={formPinjam.jumlah} onChange={(e) => setFormPinjam({ ...formPinjam, jumlah: parseInt(e.target.value) })} required className="modern-input" />
                             </div>
 
                             <div className="form-group">
@@ -310,7 +410,7 @@ const InventarisBarang = () => {
                 </div>
             )}
 
-            {/* Modal Tambah/Edit Barang (Tetap disembunyikan dalam cuplikan ini untuk menghemat ruang, Anda bisa memakai yang sebelumnya) */}
+            {/* Modal Tambah/Edit Barang */}
             {showModal && (
                 <div className="modal-overlay" onClick={() => setShowModal(false)}>
                     <div className="modal-card" onClick={(e) => e.stopPropagation()}>
