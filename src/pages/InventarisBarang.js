@@ -24,6 +24,7 @@ const InventarisBarang = () => {
     // Helper: get auth headers
     const getHeaders = () => ({
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
     });
 
@@ -111,6 +112,12 @@ const InventarisBarang = () => {
                 }),
             });
 
+            // Handle non-JSON responses (e.g. HTML error pages)
+            const contentType = res.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Server error: respons bukan JSON. Pastikan backend sudah deploy.');
+            }
+
             const result = await res.json();
 
             if (!res.ok) {
@@ -187,8 +194,20 @@ const InventarisBarang = () => {
                 }),
             });
 
+            // Handle non-JSON responses
+            const contentType = res.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Server error: respons bukan JSON. Pastikan backend sudah deploy.');
+            }
+
             const result = await res.json();
-            if (!res.ok) throw new Error(result.message || 'Gagal menyimpan peminjaman');
+            if (!res.ok) {
+                if (result.errors) {
+                    const firstError = Object.values(result.errors)[0][0];
+                    throw new Error(firstError);
+                }
+                throw new Error(result.message || 'Gagal menyimpan peminjaman');
+            }
 
             toast.success("Peminjaman berhasil dicatat!");
             setShowModalPinjam(false);
@@ -272,7 +291,7 @@ const InventarisBarang = () => {
             )}
 
             {/* KONTEN TAB: DAFTAR BARANG */}
-            {!loading && activeTab === 'barang' ? (
+            {(!loading && activeTab === 'barang') ? (
                 <div className="table-container">
                     <table className="kelas-table">
                         <thead>
