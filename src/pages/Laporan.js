@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FiSearch, FiPrinter, FiCalendar, FiFilter, FiChevronRight, FiFileText, FiUsers, FiLayers, FiEdit2, FiTrash2, FiX } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import './DataKelas.css'; // Meminjam style utama dari DataKelas
@@ -89,8 +89,8 @@ const Laporan = () => {
     });
 
     // 4. MEMUAT DATA ABSENSI TERFILTER SECARA EFISIEN DARI BACKEND
-    // Hanya fetch jika ada minimal 1 filter yang dipilih (menghindari load semua data)
-    const fetchLaporan = async () => {
+    // Fetch jika ada minimal 1 filter ATAU searchTerm yang diisi
+    const fetchLaporan = async (currentSearchTerm) => {
         setIsLoading(true);
         try {
             const token = localStorage.getItem('token');
@@ -105,6 +105,10 @@ const Laporan = () => {
             }
             if (filterJurusan) params.append('classroom_id', filterJurusan);
             if (filterAngkatan) params.append('batch_id', filterAngkatan);
+
+            // Kirim searchTerm ke backend untuk pencarian server-side
+            const termToSend = currentSearchTerm !== undefined ? currentSearchTerm : searchTerm;
+            if (termToSend) params.append('search', termToSend);
 
             if (params.toString()) {
                 url += `?${params.toString()}`;
@@ -131,10 +135,13 @@ const Laporan = () => {
         }
     };
 
+    // Debounce timer ref untuk searchTerm agar tidak fetch setiap keystroke
+    const searchTimerRef = useRef(null);
+
     useEffect(() => {
-        // Jangan fetch tanpa filter apapun
+        // Fetch jika ada filter dropdown ATAU searchTerm
         const hasFilter = filterTanggal || filterBulan || filterJurusan || filterAngkatan || filterSemester;
-        if (!hasFilter) {
+        if (!hasFilter && !searchTerm) {
             if (!isFirstLoad) {
                 // Filter dihapus semua, kosongkan data
                 setLaporan([]);
@@ -147,14 +154,42 @@ const Laporan = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterTanggal, filterBulan, filterJurusan, filterAngkatan, filterSemester, filterTahun]);
 
-    // FILTER SISWA BERDASARKAN SEARCH BAR (NAMA / NISN)
-    const filteredLaporan = laporan.filter(item => {
-        if (!searchTerm) return true;
-        const term = searchTerm.toLowerCase();
-        const namaMatches = item.nama_siswa ? item.nama_siswa.toLowerCase().includes(term) : false;
-        const nisnMatches = item.nisn ? String(item.nisn).toLowerCase().includes(term) : false;
-        return namaMatches || nisnMatches;
-    });
+    // Debounced effect khusus untuk searchTerm (500ms delay)
+    useEffect(() => {
+        // Bersihkan timer sebelumnya
+        if (searchTimerRef.current) {
+            clearTimeout(searchTimerRef.current);
+        }
+
+        // Jika searchTerm kosong dan tidak ada filter lain, kosongkan data
+        if (!searchTerm) {
+            const hasFilter = filterTanggal || filterBulan || filterJurusan || filterAngkatan || filterSemester;
+            if (!hasFilter && !isFirstLoad) {
+                setLaporan([]);
+            } else if (hasFilter) {
+                // Ada filter lain, fetch ulang tanpa search
+                fetchLaporan('');
+            }
+            return;
+        }
+
+        // Debounce: tunggu 500ms setelah user berhenti mengetik
+        searchTimerRef.current = setTimeout(() => {
+            setIsFirstLoad(false);
+            fetchLaporan(searchTerm);
+        }, 500);
+
+        return () => {
+            if (searchTimerRef.current) {
+                clearTimeout(searchTimerRef.current);
+            }
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchTerm]);
+
+    // Data sudah difilter server-side, langsung gunakan laporan
+    // (tetap ada fallback client-side filter untuk responsivitas)
+    const filteredLaporan = laporan;
 
     const handleEditAbsensi = (abs) => {
         setSelectedEditAbsensi(abs);
@@ -432,7 +467,7 @@ const Laporan = () => {
                                 ) : isFirstLoad && filteredLaporan.length === 0 ? (
                                     <tr>
                                         <td colSpan="8" style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-secondary)', fontWeight: '500' }}>
-                                            Silakan pilih filter di atas (Angkatan, Jurusan, Mapel, Tanggal, atau Bulan) untuk menampilkan data laporan.
+                                            Silakan pilih filter di atas atau ketik Nama/NISN siswa untuk menampilkan data laporan.
                                         </td>
                                     </tr>
                                 ) : filteredLaporan.length === 0 ? (
