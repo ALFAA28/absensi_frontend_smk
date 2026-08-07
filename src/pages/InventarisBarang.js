@@ -248,7 +248,6 @@ const InventarisBarang = () => {
             <div className="page-header">
                 <div className="header-left">
                     <h2 className="text-2xl font-bold text-gray-800">Manajemen Inventaris</h2>
-                    <p style={{ color: 'red', fontWeight: 'bold' }}>DEBUG URL: {API_URL}</p>
                 </div>
             </div>
 
