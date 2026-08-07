@@ -247,7 +247,8 @@ const InventarisBarang = () => {
         <div className="data-kelas-container">
             <div className="page-header">
                 <div className="header-left">
-                    <h2><FiBox style={{ marginRight: '8px' }} /> Manajemen Inventaris</h2>
+                    <h2 className="text-2xl font-bold text-gray-800">Manajemen Inventaris</h2>
+                    <p style={{ color: 'red', fontWeight: 'bold' }}>DEBUG URL: {API_URL}</p>
                 </div>
             </div>
 
