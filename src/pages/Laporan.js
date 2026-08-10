@@ -6,8 +6,8 @@ import './Laporan.css';   // Untuk styling khusus Print
 import { API_URL } from '../config';
 
 const Laporan = () => {
-    // --- OPTIMASI: LAZY LOADING DARI LOCALSTORAGE AGAR TAMPIL INSTAN ---
-    const [laporan, setLaporan] = useState(() => JSON.parse(localStorage.getItem('cached_laporan')) || []);
+    // --- DATA LAPORAN: Selalu mulai kosong, ambil dari server saat filter dipilih ---
+    const [laporan, setLaporan] = useState([]);
     const [dataAngkatan, setDataAngkatan] = useState(() => JSON.parse(localStorage.getItem('cached_angkatan')) || []);
     const [dataJurusan, setDataJurusan] = useState(() => JSON.parse(localStorage.getItem('cached_classrooms')) || []);
     const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +33,9 @@ const Laporan = () => {
     // Sekuensial lebih cepat dari Promise.all di server single-thread (php artisan serve)
     // karena menghindari antrian request yang menumpuk
     useEffect(() => {
+        // Bersihkan cache laporan lama agar tidak muncul data hantu
+        localStorage.removeItem('cached_laporan');
+
         const fetchMetadata = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -124,7 +127,7 @@ const Laporan = () => {
             if (response.ok) {
                 const data = await response.json();
                 setLaporan(data);
-                localStorage.setItem('cached_laporan', JSON.stringify(data));
+                // Tidak lagi menyimpan ke localStorage agar data selalu fresh dari server
             } else {
                 console.error("Gagal mengambil data laporan dari server");
             }
