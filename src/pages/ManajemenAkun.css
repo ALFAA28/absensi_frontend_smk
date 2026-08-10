@@ -407,27 +407,90 @@
    ========================================= */
 @media (max-width: 768px) {
   .manajemen-akun {
-    padding: 16px;
+    padding: 12px;
   }
-  
+
+  .manajemen-akun h2 {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
   .summary-cards {
     grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
   }
-  
+
+  .summary-card {
+    padding: 14px 16px;
+  }
+
+  .summary-card h4 {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+
+  .summary-card .summary-value {
+    font-size: 1.5rem;
+  }
+
   .toolbar {
     flex-direction: column;
-    align-items:stretch;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 14px;
   }
-  
+
   .search-box {
     width: 100%;
   }
-  
+
+  .search-box input {
+    padding: 10px 12px 10px 38px;
+    font-size: 14px;
+  }
+
   .filter-box {
     width: 100%;
   }
-  
+
   .filter-box select {
     width: 100%;
+    padding: 10px 12px 10px 38px;
+    font-size: 14px;
+  }
+
+  .account-table {
+    min-width: 600px;
+  }
+
+  .account-table th {
+    padding: 10px 10px;
+    font-size: 10px;
+  }
+
+  .account-table td {
+    padding: 10px 10px;
+    font-size: 12px;
+  }
+
+  .btn-action {
+    width: 30px;
+    height: 30px;
+    font-size: 0.95rem;
+  }
+
+  .action-cell {
+    gap: 5px;
+  }
+
+  .badge {
+    padding: 3px 10px;
+    font-size: 10px;
+  }
+
+  .modal-card {
+    padding: 20px;
+    width: 92%;
   }
 }
