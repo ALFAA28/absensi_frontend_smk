@@ -471,7 +471,9 @@ const InventarisBarang = () => {
                             </div>
                             <div className="modal-actions">
                                 <button type="button" className="btn-cancel" onClick={() => setShowModal(false)}>Batal</button>
-                                <button type="submit" className="btn-save-absensi">Simpan</button>
+                                <button type="submit" className="btn-save-absensi" disabled={loading}>
+                                    {loading ? <><FiLoader style={{ animation: 'spin 1s linear infinite', marginRight: '8px' }} /> Menyimpan...</> : "Simpan"}
+                                </button>
                             </div>
                         </form>
                     </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiPlus, FiSearch, FiFolder, FiUsers, FiChevronRight, FiArrowLeft, FiSave, FiX, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiPlus, FiSearch, FiFolder, FiUsers, FiChevronRight, FiArrowLeft, FiSave, FiX, FiEdit2, FiTrash2, FiLoader } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import * as XLSX from 'xlsx';
 import './DataKelas.css';
@@ -66,6 +66,9 @@ const DataKelas = () => {
     const [editAbsensiTanggal, setEditAbsensiTanggal] = useState('');
     const [editAbsensiStatus, setEditAbsensiStatus] = useState('Hadir');
     const [selectedEditAbsensi, setSelectedEditAbsensi] = useState(null);
+
+    // --- LOADING EDIT STATE ---
+    const [isLoadingEdit, setIsLoadingEdit] = useState(false);
 
     // --- STATE MATA PELAJARAN & LAINNYA ---
     const [dataMapel, setDataMapel] = useState(() => JSON.parse(localStorage.getItem('cached_mapel')) || []);
@@ -599,6 +602,7 @@ const DataKelas = () => {
             return;
         }
 
+        setIsLoadingEdit(true);
         try {
             const token = localStorage.getItem('token');
             const response = await fetch(`${API_URL}/academic-batches/${selectedEditAngkatan.id}`, {
@@ -625,6 +629,8 @@ const DataKelas = () => {
             }
         } catch (error) {
             toast.error("Terjadi kesalahan koneksi.");
+        } finally {
+            setIsLoadingEdit(false);
         }
     };
 
@@ -708,6 +714,7 @@ const DataKelas = () => {
             return;
         }
 
+        setIsLoadingEdit(true);
         try {
             const token = localStorage.getItem('token');
             let finalStatus = 'Aktif';
@@ -754,6 +761,8 @@ const DataKelas = () => {
             }
         } catch (error) {
             toast.error("Terjadi kesalahan koneksi.");
+        } finally {
+            setIsLoadingEdit(false);
         }
     };
 
@@ -789,6 +798,7 @@ const DataKelas = () => {
             return;
         }
 
+        setIsLoadingEdit(true);
         try {
             const token = localStorage.getItem('token');
             const response = await fetch(`${API_URL}/classrooms/${selectedEditJurusan.id}`, {
@@ -817,6 +827,8 @@ const DataKelas = () => {
             }
         } catch (error) {
             toast.error("Terjadi kesalahan koneksi.");
+        } finally {
+            setIsLoadingEdit(false);
         }
     };
 
@@ -831,6 +843,7 @@ const DataKelas = () => {
         e.preventDefault();
         if (!editAbsensiTanggal) return toast.error("Tanggal Absensi wajib diisi!");
 
+        setIsLoadingEdit(true);
         try {
             const token = localStorage.getItem('token');
             const response = await fetch(`${API_URL}/attendance/${selectedEditAbsensi.id}`, {
@@ -858,6 +871,8 @@ const DataKelas = () => {
             }
         } catch (error) {
             toast.error("Terjadi kesalahan koneksi.");
+        } finally {
+            setIsLoadingEdit(false);
         }
     };
 
@@ -1780,7 +1795,9 @@ const DataKelas = () => {
                             </div>
                             <div className="modal-actions">
                                 <button type="button" className="btn-cancel" onClick={() => setShowEditModalAngkatan(false)}>Batal</button>
-                                <button type="submit" className="btn-save-absensi" style={{ marginTop: 0 }}>Update Angkatan</button>
+                                <button type="submit" className="btn-save-absensi" style={{ marginTop: 0 }} disabled={isLoadingEdit}>
+                                    {isLoadingEdit ? <><FiLoader style={{ animation: 'spin 1s linear infinite', marginRight: '8px' }} /> Menyimpan...</> : "Update Angkatan"}
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -1805,7 +1822,9 @@ const DataKelas = () => {
                             </div>
                             <div className="modal-actions">
                                 <button type="button" className="btn-cancel" onClick={() => setShowEditModalJurusan(false)}>Batal</button>
-                                <button type="submit" className="btn-save-absensi" style={{ marginTop: 0 }}>Update Jurusan</button>
+                                <button type="submit" className="btn-save-absensi" style={{ marginTop: 0 }} disabled={isLoadingEdit}>
+                                    {isLoadingEdit ? <><FiLoader style={{ animation: 'spin 1s linear infinite', marginRight: '8px' }} /> Menyimpan...</> : "Update Jurusan"}
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -1855,7 +1874,9 @@ const DataKelas = () => {
                             )}
                             <div className="modal-actions">
                                 <button type="button" className="btn-cancel" onClick={() => setShowEditModalSiswa(false)}>Batal</button>
-                                <button type="submit" className="btn-save-absensi">Update Siswa</button>
+                                <button type="submit" className="btn-save-absensi" disabled={isLoadingEdit}>
+                                    {isLoadingEdit ? <><FiLoader style={{ animation: 'spin 1s linear infinite', marginRight: '8px' }} /> Menyimpan...</> : "Update Siswa"}
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -1885,7 +1906,9 @@ const DataKelas = () => {
                             </div>
                             <div className="modal-actions">
                                 <button type="button" className="btn-cancel" onClick={() => setShowEditAbsensiModal(false)}>Batal</button>
-                                <button type="submit" className="btn-save-absensi">Update Absensi</button>
+                                <button type="submit" className="btn-save-absensi" disabled={isLoadingEdit}>
+                                    {isLoadingEdit ? <><FiLoader style={{ animation: 'spin 1s linear infinite', marginRight: '8px' }} /> Menyimpan...</> : "Update Absensi"}
+                                </button>
                             </div>
                         </form>
                     </div>
