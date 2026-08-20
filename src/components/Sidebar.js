@@ -58,6 +58,14 @@ const Sidebar = ({ isOpen, toggleSidebar, closeSidebar }) => {
           </NavLink>
         )}
 
+        {/* Link eksternal ke Web Storing Modul */}
+        {(role === 'admin' || role === 'wali_kelas' || role === 'guru_mapel' || role === 'guru') && (
+          <a href="https://modul-sekolah.vercel.app" target="_blank" rel="noopener noreferrer" className="nav-item">
+            <FiFileText className="nav-icon" />
+            <span>Arsip Modul (Web Baru)</span>
+          </a>
+        )}
+
         {/* Inventaris Barang MUNCUL untuk Admin dan Sarpras */}
         {role === 'sarpras' && (
           <NavLink to="/inventaris-barang" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'} onClick={handleMenuClick}>

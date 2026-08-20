@@ -10,12 +10,23 @@ const Login = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const [loginTarget, setLoginTarget] = useState(null);
+
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const redirectUrl = searchParams.get('redirect');
+
+  const handleLogin = async (e, target = 'absensi') => {
     e.preventDefault();
+    if (!email || !password) {
+      setError('Mohon isi email dan password.');
+      return;
+    }
+
     setError('');
     setIsLoading(true);
+    setLoginTarget(target);
 
     try {
       const response = await fetch(`${API_URL}/login`, {
@@ -46,7 +57,19 @@ const Login = () => {
         // Simpan info kelas jika ada
         localStorage.setItem('classroomId', data.user.classroom_id || '');
 
-        // 3. Arahkan pengguna berdasarkan rolenya
+        // JIKA ADA REDIRECT (Flow SSO otomatis dari klik tombol di Web Storing Modul)
+        if (redirectUrl) {
+          window.location.href = `${redirectUrl}?token=${data.token}`;
+          return;
+        }
+
+        // JIKA USER KLIK TOMBOL "LOGIN KE STORING MODUL" DI HALAMAN INI
+        if (target === 'storing') {
+          window.location.href = `https://modul-sekolah.vercel.app/sso-callback?token=${data.token}`;
+          return;
+        }
+
+        // 3. Arahkan pengguna berdasarkan rolenya (Flow Biasa Absensi)
         if (data.user.role === 'sarpras') {
           navigate('/inventaris-barang', { replace: true });
         } else {
@@ -60,6 +83,7 @@ const Login = () => {
       setError('Gagal terhubung ke server. Pastikan backend berjalan.');
     } finally {
       setIsLoading(false);
+      setLoginTarget(null);
     }
   };
 
@@ -77,7 +101,7 @@ const Login = () => {
 
         {error && <div className="error-message">{error}</div>}
 
-        <form onSubmit={handleLogin}>
+        <form>
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <div className="input-icon-wrapper">
@@ -108,12 +132,35 @@ const Login = () => {
             </div>
           </div>
 
-          <button type="submit" className="btn-login" disabled={isLoading}>
-            {isLoading ? (
+          {/* Tombol Login Biasa (Absensi) */}
+          <button 
+            type="button" 
+            className="btn-login" 
+            onClick={(e) => handleLogin(e, 'absensi')}
+            disabled={isLoading}
+          >
+            {isLoading && loginTarget === 'absensi' ? (
               <div className="loading-spinner"></div>
             ) : (
               <>
-                <FaSignInAlt className="btn-icon" /> Login
+                <FaSignInAlt className="btn-icon" /> Login ke Absensi
+              </>
+            )}
+          </button>
+
+          {/* Tombol Login ke Storing Modul */}
+          <button 
+            type="button" 
+            className="btn-login" 
+            style={{ backgroundColor: '#4f46e5', marginTop: '12px' }}
+            onClick={(e) => handleLogin(e, 'storing')}
+            disabled={isLoading}
+          >
+            {isLoading && loginTarget === 'storing' ? (
+              <div className="loading-spinner"></div>
+            ) : (
+              <>
+                <FaSignInAlt className="btn-icon" /> Login ke Storing Modul
               </>
             )}
           </button>
