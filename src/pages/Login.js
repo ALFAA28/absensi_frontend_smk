@@ -65,7 +65,7 @@ const Login = () => {
 
         // JIKA USER KLIK TOMBOL "LOGIN KE STORING MODUL" DI HALAMAN INI
         if (target === 'storing') {
-          window.location.href = `https://modul-sekolah.vercel.app/sso-callback?token=${data.token}`;
+          window.location.href = `https://storing-modul-main.vercel.app/sso-callback?token=${data.token}`;
           return;
         }
 
