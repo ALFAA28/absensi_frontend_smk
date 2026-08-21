@@ -7,6 +7,7 @@ import ManajemenAkun from './pages/ManajemenAkun';
 import Login from './pages/Login';
 import LoginStoring from './pages/LoginStoring';
 import Register from './pages/Register';
+import RegisterStoring from './pages/RegisterStoring';
 import InventarisBarang from './pages/InventarisBarang';
 import PrivateRoute from './components/PrivateRoute';
 import UbahPassword from './pages/UbahPassword';
@@ -34,6 +35,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/login-storing" element={<LoginStoring />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/register-storing" element={<RegisterStoring />} />
 
         {/* Rute yang diproteksi */}
         <Route element={<PrivateRoute />}>

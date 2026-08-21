@@ -120,6 +120,10 @@ const LoginStoring = () => {
         </form>
 
         <div className="login-link" style={{ marginTop: '20px', textAlign: 'center', fontSize: '14px' }}>
+          Belum punya akun Storing? <Link to="/register-storing" style={{ color: '#4f46e5', textDecoration: 'none', fontWeight: 'bold' }}>Daftar di sini</Link>
+        </div>
+        
+        <div className="login-link" style={{ marginTop: '20px', textAlign: 'center', fontSize: '14px' }}>
           <Link to="/login" style={{ color: '#64748b', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
             <FaArrowLeft /> Kembali ke Login Absensi
           </Link>

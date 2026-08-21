@@ -58,6 +58,8 @@ const ManajemenAkun = () => {
           classroom_id: user.classroom_id || '',
           role: user.role,
           status: user.status || 'pending',
+          nrg: user.nrg || '-',
+          app_source: user.app_source || 'absensi',
           createdAt: new Date(user.created_at).toLocaleDateString('id-ID')
         }));
 
@@ -296,10 +298,11 @@ const ManajemenAkun = () => {
           <thead>
             <tr>
               <th>No</th>
-              <th>Nama</th>
+              <th>Nama / NRG</th>
               <th>Email</th>
               <th>Kelas / Jurusan</th>
               <th>Role / Peran</th>
+              <th>Sumber</th>
               <th>Status</th>
               <th>Aksi</th>
             </tr>
@@ -315,6 +318,8 @@ const ManajemenAkun = () => {
                   <td>{index + 1}</td>
                   <td className="name-cell">
                     {acc.nama}
+                    <br />
+                    <span style={{ fontSize: '12px', color: '#64748b' }}>NRG: {acc.nrg}</span>
                   </td>
                   <td>{acc.email}</td>
                   <td>
@@ -326,6 +331,13 @@ const ManajemenAkun = () => {
                   </td>
                   {/* Menampilkan Role Asli Akun dalam Bentuk Label Badge */}
                   <td>{getRoleBadge(acc.role)}</td>
+                  <td>
+                    {acc.app_source === 'storing' ? (
+                      <span style={{ background: '#e0e7ff', color: '#4f46e5', padding: '4px 10px', borderRadius: '4px', fontSize: '11px', fontWeight: 'bold' }}>Storing</span>
+                    ) : (
+                      <span style={{ background: '#f1f5f9', color: '#475569', padding: '4px 10px', borderRadius: '4px', fontSize: '11px', fontWeight: 'bold' }}>Absensi</span>
+                    )}
+                  </td>
                   <td>{getStatusBadge(acc.status)}</td>
                   <td className="action-cell">
                     {acc.status === 'pending' || acc.status === 'inactive' ? (
