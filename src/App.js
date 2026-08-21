@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import DataKelas from './pages/DataKelas';
 import ManajemenAkun from './pages/ManajemenAkun';
 import Login from './pages/Login';
+import LoginStoring from './pages/LoginStoring';
 import Register from './pages/Register';
 import InventarisBarang from './pages/InventarisBarang';
 import PrivateRoute from './components/PrivateRoute';
@@ -31,6 +32,7 @@ function App() {
       <Routes>
         {/* Rute Publik */}
         <Route path="/login" element={<Login />} />
+        <Route path="/login-storing" element={<LoginStoring />} />
         <Route path="/register" element={<Register />} />
 
         {/* Rute yang diproteksi */}
