@@ -57,18 +57,14 @@ const Login = () => {
         // Simpan info kelas jika ada
         localStorage.setItem('classroomId', data.user.classroom_id || '');
 
-        // JIKA ADA REDIRECT (Flow SSO otomatis dari klik tombol di Web Storing Modul)
-        if (redirectUrl) {
-          window.location.href = `${redirectUrl}?token=${data.token}`;
-          return;
-        }
-
         // JIKA USER KLIK TOMBOL "LOGIN KE STORING MODUL" DI HALAMAN INI
         if (target === 'storing') {
-          window.location.href = `https://storing-modul-main.vercel.app/sso-callback?token=${data.token}`;
+          const finalRedirectUrl = redirectUrl ? redirectUrl : 'https://storing-modul-main.vercel.app/sso-callback';
+          window.location.href = `${finalRedirectUrl}?token=${data.token}`;
           return;
         }
 
+        // JIKA TARGET 'absensi', abaikan redirectUrl dan tetap di Absensi
         // 3. Arahkan pengguna berdasarkan rolenya (Flow Biasa Absensi)
         if (data.user.role === 'sarpras') {
           navigate('/inventaris-barang', { replace: true });
