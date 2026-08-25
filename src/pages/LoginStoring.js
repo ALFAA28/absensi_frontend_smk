@@ -32,7 +32,8 @@ const LoginStoring = () => {
         },
         body: JSON.stringify({
           email: email,
-          password: password
+          password: password,
+          app_source: 'storing'
         })
       });
 
@@ -43,6 +44,7 @@ const LoginStoring = () => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.user.role);
         localStorage.setItem('userName', data.user.name);
+        localStorage.setItem('appSource', data.user.app_source || 'storing');
         localStorage.setItem('classroomId', data.user.classroom_id || '');
 
         // Arahkan ke Storing Modul

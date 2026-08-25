@@ -60,7 +60,8 @@ const Register = () => {
           nama: formData.nama,
           email: formData.email,
           password: formData.password,
-          classroom_id: formData.classroom_id || null
+          classroom_id: formData.classroom_id || null,
+          app_source: 'absensi'
         })
       });
 

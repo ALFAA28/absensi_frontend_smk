@@ -11,6 +11,7 @@ const ManajemenAkun = () => {
   const [classrooms, setClassrooms] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [filterAppSource, setFilterAppSource] = useState('all');
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -20,6 +21,8 @@ const ManajemenAkun = () => {
   const [selectedEditUser, setSelectedEditUser] = useState(null);
   const [editRole, setEditRole] = useState('guru_mapel');
   const [editClassroomId, setEditClassroomId] = useState('');
+  const [editAppSource, setEditAppSource] = useState('absensi');
+  const [editNrg, setEditNrg] = useState('');
 
   useEffect(() => {
     fetchDataAkun();
@@ -76,9 +79,11 @@ const ManajemenAkun = () => {
     const matchesSearch =
       acc.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
       acc.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      acc.kelas.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = filterStatus === 'all' || acc.status === filterStatus;
-    return matchesSearch && matchesFilter;
+      acc.kelas.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (acc.nrg && acc.nrg.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesStatus = filterStatus === 'all' || acc.status === filterStatus;
+    const matchesSource = filterAppSource === 'all' || acc.app_source === filterAppSource;
+    return matchesSearch && matchesStatus && matchesSource;
   });
 
   // Hitung jumlah per status
@@ -151,11 +156,13 @@ const ManajemenAkun = () => {
     }
   };
 
-  // --- EDIT USER ROLE & KELAS BINAAN ---
+  // --- EDIT USER ROLE & KELAS BINAAN & SUMBER AKUN ---
   const handleOpenEdit = (acc) => {
     setSelectedEditUser(acc);
     setEditRole(acc.role || 'guru_mapel');
     setEditClassroomId(acc.classroom_id || '');
+    setEditAppSource(acc.app_source || 'absensi');
+    setEditNrg(acc.nrg && acc.nrg !== '-' ? acc.nrg : '');
     setShowEditModal(true);
     if (classrooms.length === 0) {
       fetchClassrooms();
@@ -177,7 +184,9 @@ const ManajemenAkun = () => {
         },
         body: JSON.stringify({
           role: editRole,
-          classroom_id: editRole === 'wali_kelas' ? editClassroomId : null
+          classroom_id: editRole === 'wali_kelas' ? editClassroomId : null,
+          app_source: editAppSource,
+          nrg: editNrg || null
         })
       });
 
@@ -276,18 +285,26 @@ const ManajemenAkun = () => {
           <FiSearch className="search-icon" />
           <input
             type="text"
-            placeholder="Cari nama, email, atau kelas..."
+            placeholder="Cari nama, email, kelas, atau NRG..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <div className="filter-box">
           <FiFilter className="filter-icon" />
-          <select value={filterStatus} onChange={(e) => setSearchTerm(e.target.value)}>
+          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
             <option value="all">Semua Status</option>
             <option value="pending">Menunggu Persetujuan</option>
             <option value="active">Aktif</option>
             <option value="inactive">Nonaktif</option>
+          </select>
+        </div>
+        <div className="filter-box">
+          <FiFilter className="filter-icon" />
+          <select value={filterAppSource} onChange={(e) => setFilterAppSource(e.target.value)}>
+            <option value="all">Semua Sumber Sistem</option>
+            <option value="absensi">Web Absensi</option>
+            <option value="storing">Storing Modul</option>
           </select>
         </div>
       </div>
@@ -310,7 +327,7 @@ const ManajemenAkun = () => {
           <tbody>
             {filteredAccounts.length === 0 ? (
               <tr>
-                <td colSpan="7" className="empty-row">Tidak ada data akun ditemukan.</td>
+                <td colSpan="8" className="empty-row">Tidak ada data akun ditemukan.</td>
               </tr>
             ) : (
               filteredAccounts.map((acc, index) => (
@@ -366,7 +383,7 @@ const ManajemenAkun = () => {
         </table>
       </div>
 
-      {/* Modal Edit Role & Kelas Binaan */}
+      {/* Modal Edit Role, Kelas Binaan, Sumber Akun, NRG */}
       {showEditModal && selectedEditUser && (
         <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
@@ -375,6 +392,34 @@ const ManajemenAkun = () => {
               <button type="button" className="btn-close-modal" onClick={() => setShowEditModal(false)}><FiX /></button>
             </div>
             <form onSubmit={handleSaveEditUser} className="modal-body">
+              <div className="form-group" style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold', fontSize: '13px' }}>Sumber Platform / Sistem</label>
+                <select
+                  className="modern-input"
+                  value={editAppSource}
+                  onChange={(e) => setEditAppSource(e.target.value)}
+                  style={{ width: '100%' }}
+                >
+                  <option value="absensi">Web Absensi</option>
+                  <option value="storing">Web Storing Modul</option>
+                </select>
+                <small style={{ color: '#64748b', fontSize: '11px' }}>
+                  Menentukan web mana yang dapat diakses oleh akun ini.
+                </small>
+              </div>
+
+              <div className="form-group" style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold', fontSize: '13px' }}>Nomor Registrasi Guru (NRG)</label>
+                <input
+                  type="text"
+                  className="modern-input"
+                  placeholder="Contoh: 198203102008..."
+                  value={editNrg}
+                  onChange={(e) => setEditNrg(e.target.value)}
+                  style={{ width: '100%' }}
+                />
+              </div>
+
               <div className="form-group" style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold', fontSize: '13px' }}>Peran / Role Akun</label>
                 <select
@@ -385,7 +430,6 @@ const ManajemenAkun = () => {
                 >
                   <option value="guru_mapel">Guru Mata Pelajaran</option>
                   <option value="wali_kelas">Wali Kelas</option>
-
                   <option value="sarpras">Pengelola Sarpras</option>
                   <option value="admin">Admin System</option>
                 </select>

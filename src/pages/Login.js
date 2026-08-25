@@ -37,7 +37,8 @@ const Login = () => {
         },
         body: JSON.stringify({
           email: email,
-          password: password
+          password: password,
+          app_source: target
         })
       });
 
@@ -51,8 +52,9 @@ const Login = () => {
         // 2. Simpan role ke localStorage agar Sidebar bisa menyesuaikan menu
         localStorage.setItem('role', data.user.role);
 
-        // (Opsional) Simpan nama user
+        // (Opsional) Simpan nama user & app_source
         localStorage.setItem('userName', data.user.name);
+        localStorage.setItem('appSource', data.user.app_source || 'absensi');
 
         // Simpan info kelas jika ada
         localStorage.setItem('classroomId', data.user.classroom_id || '');
