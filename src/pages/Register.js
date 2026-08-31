@@ -146,28 +146,11 @@ const Register = () => {
                     className="modern-input"
                   >
                     <option value="">-- Bukan Wali Kelas / Pilih Kelas Binaan --</option>
-                    {['10', '11', '12'].map(grade => {
-                      const list = classrooms.filter(c => String(c.grade) === String(grade));
-                      if (list.length === 0) return null;
-                      return (
-                        <optgroup key={grade} label={`Tingkat ${grade} (Kelas ${grade === '10' ? 'X' : (grade === '11' ? 'XI' : 'XII')})`}>
-                          {list.map(cls => (
-                            <option key={cls.id} value={cls.id}>
-                              {cls.name} ({cls.singkatan})
-                            </option>
-                          ))}
-                        </optgroup>
-                      );
-                    })}
-                    {classrooms.filter(c => !['10', '11', '12'].includes(String(c.grade))).length > 0 && (
-                      <optgroup label="Kelas Lainnya">
-                        {classrooms.filter(c => !['10', '11', '12'].includes(String(c.grade))).map(cls => (
-                          <option key={cls.id} value={cls.id}>
-                            {cls.name} ({cls.singkatan})
-                          </option>
-                        ))}
-                      </optgroup>
-                    )}
+                    {classrooms.map(cls => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.name} ({cls.singkatan})
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
