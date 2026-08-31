@@ -45,6 +45,13 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
+        // 0. Bersihkan cache sesi sebelumnya agar data tidak bercampur
+        localStorage.removeItem('cached_angkatan');
+        localStorage.removeItem('cached_classrooms');
+        localStorage.removeItem('cached_students');
+        localStorage.removeItem('cached_dashboard_atts');
+        localStorage.removeItem('cached_mapel');
+        localStorage.removeItem('cached_laporan');
 
         // 1. Simpan token ke localStorage
         localStorage.setItem('token', data.token);

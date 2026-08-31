@@ -7,8 +7,7 @@ const Sidebar = ({ isOpen, toggleSidebar, closeSidebar }) => {
   const role = localStorage.getItem('role'); // Mengambil role yang sedang login
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
+    localStorage.clear();
     navigate('/login');
   };
 

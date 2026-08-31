@@ -1271,9 +1271,11 @@ const DataKelas = () => {
                                 <FiSearch className="search-icon" />
                                 <input type="text" placeholder="Cari..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                             </div>
-                            <button className="btn-add" onClick={() => currentView === 'angkatan' ? setShowModalAngkatan(true) : setShowModalJurusan(true)}>
-                                <FiPlus className="icon-left" /> Tambah Data
-                            </button>
+                            {userRole === 'admin' && (
+                                <button className="btn-add" onClick={() => currentView === 'angkatan' ? setShowModalAngkatan(true) : setShowModalJurusan(true)}>
+                                    <FiPlus className="icon-left" /> Tambah Data
+                                </button>
+                            )}
                         </div>
 
                         <div className="card-grid">
@@ -1287,30 +1289,32 @@ const DataKelas = () => {
                                         <h3>{currentView === 'angkatan' ? item.name : item.nama_jurusan}</h3>
                                         <p>{currentView === 'angkatan' ? `Tahun: ${item.year}` : `Singkatan: ${item.singkatan || '-'}`}</p>
                                     </div>
-                                    <div className="folder-actions" style={{ display: 'flex', gap: '8px', zIndex: 2 }}>
-                                        <button
-                                            className="btn-action btn-edit"
-                                            title="Edit"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                if (currentView === 'angkatan') handleEditAngkatan(item);
-                                                else handleEditJurusan(item);
-                                            }}
-                                        >
-                                            <FiEdit2 />
-                                        </button>
-                                        <button
-                                            className="btn-action btn-delete"
-                                            title="Hapus"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                if (currentView === 'angkatan') handleDeleteAngkatan(item.id);
-                                                else handleDeleteJurusan(item.id, item.nama_jurusan); // <--- Kirim parameter nama jurusan
-                                            }}
-                                        >
-                                            <FiTrash2 />
-                                        </button>
-                                    </div>
+                                    {userRole === 'admin' && (
+                                        <div className="folder-actions" style={{ display: 'flex', gap: '8px', zIndex: 2 }}>
+                                            <button
+                                                className="btn-action btn-edit"
+                                                title="Edit"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if (currentView === 'angkatan') handleEditAngkatan(item);
+                                                    else handleEditJurusan(item);
+                                                }}
+                                            >
+                                                <FiEdit2 />
+                                            </button>
+                                            <button
+                                                className="btn-action btn-delete"
+                                                title="Hapus"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if (currentView === 'angkatan') handleDeleteAngkatan(item.id);
+                                                    else handleDeleteJurusan(item.id, item.nama_jurusan); // <--- Kirim parameter nama jurusan
+                                                }}
+                                            >
+                                                <FiTrash2 />
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
