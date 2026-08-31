@@ -1271,7 +1271,7 @@ const DataKelas = () => {
                                 <FiSearch className="search-icon" />
                                 <input type="text" placeholder="Cari..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                             </div>
-                            {userRole === 'admin' && (
+                            {(userRole === 'admin' || (userRole === 'wali_kelas' && currentView === 'jurusan')) && (
                                 <button className="btn-add" onClick={() => currentView === 'angkatan' ? setShowModalAngkatan(true) : setShowModalJurusan(true)}>
                                     <FiPlus className="icon-left" /> Tambah Data
                                 </button>
@@ -1289,7 +1289,7 @@ const DataKelas = () => {
                                         <h3>{currentView === 'angkatan' ? item.name : item.nama_jurusan}</h3>
                                         <p>{currentView === 'angkatan' ? `Tahun: ${item.year}` : `Singkatan: ${item.singkatan || '-'}`}</p>
                                     </div>
-                                    {userRole === 'admin' && (
+                                    {(userRole === 'admin' || (userRole === 'wali_kelas' && currentView === 'jurusan')) && (
                                         <div className="folder-actions" style={{ display: 'flex', gap: '8px', zIndex: 2 }}>
                                             <button
                                                 className="btn-action btn-edit"
