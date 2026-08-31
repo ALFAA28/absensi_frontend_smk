@@ -37,21 +37,22 @@ const Dashboard = () => {
         };
 
         // Sekuensial: setiap response langsung di-set ke state (render progresif)
-        const resClassrooms = await fetch(`${API_URL}/classrooms`, { headers });
+        // scope=all agar dashboard menampilkan data seluruh kelas (termasuk untuk wali_kelas)
+        const resClassrooms = await fetch(`${API_URL}/classrooms?scope=all`, { headers });
         if (resClassrooms.ok) {
           const classData = await resClassrooms.json();
           setClassrooms(classData);
           localStorage.setItem('cached_classrooms', JSON.stringify(classData));
         }
 
-        const resStudents = await fetch(`${API_URL}/students`, { headers });
+        const resStudents = await fetch(`${API_URL}/students?scope=all`, { headers });
         if (resStudents.ok) {
           const studData = await resStudents.json();
           setStudents(studData);
           localStorage.setItem('cached_students', JSON.stringify(studData));
         }
 
-        const resAttendances = await fetch(`${API_URL}/attendance?tanggal=${today}`, { headers });
+        const resAttendances = await fetch(`${API_URL}/attendance?scope=all&tanggal=${today}`, { headers });
         if (resAttendances.ok) {
           const attData = await resAttendances.json();
           setAttendances(attData);
