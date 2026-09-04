@@ -8,6 +8,13 @@
 ========================================= */
 @media print {
 
+    /* PAKSA semua elemen background putih/transparan */
+    *, *::before, *::after {
+        background: transparent !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
     /* Sembunyikan Sidebar, Breadcrumb, Header Toolbar, dll */
     .no-print,
     .sidebar,
@@ -19,32 +26,30 @@
         display: none !important;
     }
 
-    /* Reset semua shadow */
-    * {
-        box-shadow: none !important;
-    }
-
-    body {
-        background-color: white !important;
+    html, body {
+        background: #fff !important;
+        background-color: #fff !important;
         margin: 0 !important;
         /* Padding menggantikan margin @page agar konten tidak menempel ke tepi */
         padding: 12mm 14mm !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
     }
 
-    .main-content,
+    #root, .app-container, .main-content,
     .data-kelas-container,
     .content-area,
     .print-area,
     .table-container {
-        background-color: white !important;
+        background: #fff !important;
+        background-color: #fff !important;
         padding: 0 !important;
         margin: 0 auto !important;
-        box-shadow: none !important;
         border: none !important;
         width: 100% !important;
         max-width: 100% !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
     }
 
     /* Munculkan header kop surat khusus print */
@@ -112,6 +117,8 @@
         padding: 6px 8px !important;
         color: #000 !important;
         background-color: #e8e8e8 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
         font-size: 11px !important;
         font-weight: 700;
         text-align: center;
@@ -122,6 +129,7 @@
         padding: 5px 8px !important;
         color: #000 !important;
         font-size: 11px !important;
+        background: #fff !important;
     }
 
     /* Hilangkan background dari badge saat diprint */
