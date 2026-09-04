@@ -164,3 +164,13 @@ body {
     padding: 16px;
   }
 }
+
+/* =========================================
+   GLOBAL PRINT STYLES
+   ========================================= */
+@media print {
+  .mobile-menu-btn,
+  .sidebar {
+    display: none !important;
+  }
+}

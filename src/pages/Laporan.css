@@ -14,7 +14,8 @@
     .navbar,
     .breadcrumb,
     .page-header,
-    .toolbar {
+    .toolbar,
+    .mobile-menu-btn {
         display: none !important;
     }
 
