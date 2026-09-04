@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FiPlus, FiSearch, FiEdit2, FiTrash2, FiBox, FiCheckCircle, FiUpload, FiClock, FiLoader } from 'react-icons/fi';
+import { FiPlus, FiSearch, FiEdit2, FiTrash2, FiBox, FiCheckCircle, FiUpload, FiClock, FiLoader, FiPrinter } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import { API_URL } from '../config';
 
@@ -20,6 +20,9 @@ const InventarisBarang = () => {
 
     const [showModalPinjam, setShowModalPinjam] = useState(false);
     const [formPinjam, setFormPinjam] = useState({ inventaris_id: null, nama_barang: '', nama_peminjam: '', tanggal_pinjam: '', jumlah: 1, keterangan: '' });
+
+    const [filterType, setFilterType] = useState('semua');
+    const [filterValue, setFilterValue] = useState('');
 
     // Helper: get auth headers
     const getHeaders = () => ({
@@ -70,10 +73,16 @@ const InventarisBarang = () => {
         b.kode.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const filteredPeminjaman = dataPeminjaman.filter(p =>
+    let filteredPeminjaman = dataPeminjaman.filter(p =>
         p.nama_peminjam.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (p.inventaris?.nama || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    if (filterType === 'harian' && filterValue) {
+        filteredPeminjaman = filteredPeminjaman.filter(p => p.tanggal_pinjam === filterValue);
+    } else if (filterType === 'bulanan' && filterValue) {
+        filteredPeminjaman = filteredPeminjaman.filter(p => p.tanggal_pinjam.startsWith(filterValue));
+    }
 
     // ========================
     // CRUD BARANG
@@ -243,6 +252,117 @@ const InventarisBarang = () => {
         }
     };
 
+    const printStruk = (pinjam) => {
+        const printWindow = window.open('', '', 'width=800,height=600');
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Cetak Struk Peminjaman</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+                        .content { line-height: 1.6; }
+                        .signature-area { display: flex; justify-content: space-around; margin-top: 50px; }
+                        .signature { text-align: center; width: 200px; }
+                        .signature p { margin-top: 80px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h2>STRUK PEMINJAMAN BARANG</h2>
+                    </div>
+                    <div class="content">
+                        <p><strong>Nama Peminjam:</strong> ${pinjam.nama_peminjam}</p>
+                        <p><strong>Barang:</strong> ${pinjam.inventaris?.nama || 'N/A'}</p>
+                        <p><strong>Jumlah:</strong> ${pinjam.jumlah} unit</p>
+                        <p><strong>Tanggal Pinjam:</strong> ${pinjam.tanggal_pinjam}</p>
+                        <p><strong>Keterangan:</strong> ${pinjam.keterangan || '-'}</p>
+                        <p><strong>Status:</strong> ${pinjam.status}</p>
+                    </div>
+                    <p style="margin-top: 30px;"><em>* Harap struk ini dikembalikan dan ditandatangani saat mengembalikan barang.</em></p>
+                    <div class="signature-area">
+                        <div class="signature">
+                            <span>Peminjam</span>
+                            <p>( ${pinjam.nama_peminjam} )</p>
+                        </div>
+                        <div class="signature">
+                            <span>Petugas</span>
+                            <p>( ........................ )</p>
+                        </div>
+                    </div>
+                    <script>
+                        setTimeout(() => {
+                            window.print();
+                            window.onafterprint = function() { window.close(); }
+                        }, 500);
+                    </script>
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
+    };
+
+    const printLaporan = (data) => {
+        const printWindow = window.open('', '', 'width=800,height=600');
+        
+        let rows = data.map((pinjam, index) => `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${pinjam.nama_peminjam}</td>
+                <td>${pinjam.inventaris?.nama || 'N/A'}</td>
+                <td>${pinjam.jumlah}</td>
+                <td>${pinjam.tanggal_pinjam}</td>
+                <td>${pinjam.status}</td>
+            </tr>
+        `).join('');
+
+        let headerText = 'Laporan Riwayat Peminjaman';
+        if (filterType === 'harian' && filterValue) headerText += ` (Harian: ${filterValue})`;
+        else if (filterType === 'bulanan' && filterValue) headerText += ` (Bulanan: ${filterValue})`;
+
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Laporan Peminjaman</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+                        th { background-color: #f2f2f2; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h2>${headerText}</h2>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Peminjam</th>
+                                <th>Barang</th>
+                                <th>Jumlah</th>
+                                <th>Tanggal Pinjam</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows || '<tr><td colspan="6" style="text-align:center;">Tidak ada data</td></tr>'}
+                        </tbody>
+                    </table>
+                    <script>
+                        setTimeout(() => {
+                            window.print();
+                            window.onafterprint = function() { window.close(); }
+                        }, 500);
+                    </script>
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
+    };
+
     return (
         <div className="data-kelas-container">
             <div className="page-header">
@@ -277,6 +397,24 @@ const InventarisBarang = () => {
                     <div style={{ display: 'flex', gap: '12px' }}>
                         <button className="btn-add" onClick={bukaModalTambah}>
                             <FiPlus className="icon-left" /> Tambah Barang
+                        </button>
+                    </div>
+                )}
+                {activeTab === 'peminjaman' && (
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                        <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="modern-input" style={{ width: 'auto', padding: '8px' }}>
+                            <option value="semua">Semua Waktu</option>
+                            <option value="harian">Harian</option>
+                            <option value="bulanan">Bulanan</option>
+                        </select>
+                        {filterType === 'harian' && (
+                            <input type="date" value={filterValue} onChange={(e) => setFilterValue(e.target.value)} className="modern-input" style={{ width: 'auto', padding: '8px' }} />
+                        )}
+                        {filterType === 'bulanan' && (
+                            <input type="month" value={filterValue} onChange={(e) => setFilterValue(e.target.value)} className="modern-input" style={{ width: 'auto', padding: '8px' }} />
+                        )}
+                        <button className="btn-add" style={{ backgroundColor: 'var(--primary-color)' }} onClick={() => printLaporan(filteredPeminjaman)}>
+                            <FiPrinter className="icon-left" /> Cetak Laporan
                         </button>
                     </div>
                 )}
@@ -364,11 +502,18 @@ const InventarisBarang = () => {
                                     <button
                                         className="btn-add"
                                         onClick={() => handleKembalikanBarang(pinjam)}
-                                        style={{ background: 'linear-gradient(135deg, var(--success-color), #059669)', color: 'white', width: '100%', justifyContent: 'center', marginTop: 'auto', border: 'none', padding: '10px', borderRadius: 'var(--radius-sm)', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.25)' }}
+                                        style={{ background: 'linear-gradient(135deg, var(--success-color), #059669)', color: 'white', width: '100%', justifyContent: 'center', marginTop: 'auto', border: 'none', padding: '10px', borderRadius: 'var(--radius-sm)', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.25)', marginBottom: '8px' }}
                                     >
                                         <FiCheckCircle className="icon-left" /> Tandai Dikembalikan
                                     </button>
                                 )}
+                                <button
+                                    className="btn-add"
+                                    onClick={() => printStruk(pinjam)}
+                                    style={{ background: 'linear-gradient(135deg, #4f46e5, #4338ca)', color: 'white', width: '100%', justifyContent: 'center', marginTop: pinjam.status === 'Sedang Dipinjam' ? '0' : 'auto', border: 'none', padding: '10px', borderRadius: 'var(--radius-sm)', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(79, 70, 229, 0.25)' }}
+                                >
+                                    <FiPrinter className="icon-left" /> Cetak Struk
+                                </button>
                             </div>
                         ))
                     )}
