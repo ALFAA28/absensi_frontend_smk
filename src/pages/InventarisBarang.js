@@ -259,17 +259,31 @@ const InventarisBarang = () => {
                 <head>
                     <title>Cetak Struk Peminjaman</title>
                     <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; }
-                        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
-                        .content { line-height: 1.6; }
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body { font-family: 'Times New Roman', Times, serif; padding: 20px; background-color: #fff; color: #000; }
+                        .header { text-align: center; margin-bottom: 20px; }
+                        .header-top { display: flex; align-items: center; justify-content: center; border-bottom: 3px double #000; padding-bottom: 14px; margin-bottom: 14px; gap: 20px; }
+                        .header-logo { width: 75px; height: auto; }
+                        .header-text { text-align: center; }
+                        .school-name { font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 2px 0; }
+                        .school-address { font-size: 11px; color: #333; margin: 0 0 10px 0; }
+                        .report-title { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 10px 0 6px 0; }
+                        .content { line-height: 1.6; font-size: 14px; margin-top: 10px; }
                         .signature-area { display: flex; justify-content: space-around; margin-top: 50px; }
-                        .signature { text-align: center; width: 200px; }
+                        .signature { text-align: center; width: 200px; font-size: 14px; }
                         .signature p { margin-top: 80px; }
                     </style>
                 </head>
                 <body>
                     <div class="header">
-                        <h2>STRUK PEMINJAMAN BARANG</h2>
+                        <div class="header-top">
+                            <img src="/IMG_03611.png" alt="Logo SMK NU Donomulyo" class="header-logo" />
+                            <div class="header-text">
+                                <div class="school-name">SMK Nahdlatul Ulama Donomulyo</div>
+                                <div class="school-address">Jl. Raya Dawung, Tempursari Selatan, Tempursari, Kec. Donomulyo, Kab. Malang, Jawa Timur</div>
+                            </div>
+                        </div>
+                        <div class="report-title">STRUK PEMINJAMAN BARANG</div>
                     </div>
                     <div class="content">
                         <p><strong>Nama Peminjam:</strong> ${pinjam.nama_peminjam}</p>
@@ -279,7 +293,7 @@ const InventarisBarang = () => {
                         <p><strong>Keterangan:</strong> ${pinjam.keterangan || '-'}</p>
                         <p><strong>Status:</strong> ${pinjam.status}</p>
                     </div>
-                    <p style="margin-top: 30px;"><em>* Harap struk ini dikembalikan dan ditandatangani saat mengembalikan barang.</em></p>
+                    <p style="margin-top: 30px; font-size: 12px; color: #555;"><em>* Harap struk ini dikembalikan dan ditandatangani saat mengembalikan barang.</em></p>
                     <div class="signature-area">
                         <div class="signature">
                             <span>Peminjam</span>
@@ -307,12 +321,12 @@ const InventarisBarang = () => {
         
         let rows = data.map((pinjam, index) => `
             <tr>
-                <td>${index + 1}</td>
+                <td style="text-align: center;">${index + 1}</td>
                 <td>${pinjam.nama_peminjam}</td>
                 <td>${pinjam.inventaris?.nama || 'N/A'}</td>
-                <td>${pinjam.jumlah}</td>
-                <td>${pinjam.tanggal_pinjam}</td>
-                <td>${pinjam.status}</td>
+                <td style="text-align: center;">${pinjam.jumlah}</td>
+                <td style="text-align: center;">${pinjam.tanggal_pinjam}</td>
+                <td style="text-align: center;">${pinjam.status}</td>
             </tr>
         `).join('');
 
@@ -325,16 +339,33 @@ const InventarisBarang = () => {
                 <head>
                     <title>Laporan Peminjaman</title>
                     <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; }
-                        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
-                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
-                        th { background-color: #f2f2f2; }
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body { font-family: 'Times New Roman', Times, serif; padding: 12mm 14mm; background-color: #fff; color: #000; }
+                        .header { text-align: center; margin-bottom: 20px; }
+                        .header-top { display: flex; align-items: center; justify-content: center; border-bottom: 3px double #000; padding-bottom: 14px; margin-bottom: 14px; gap: 20px; }
+                        .header-logo { width: 75px; height: auto; }
+                        .header-text { text-align: center; }
+                        .school-name { font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 2px 0; }
+                        .school-address { font-size: 11px; color: #333; margin: 0 0 10px 0; }
+                        .report-title { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 10px 0 6px 0; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 12px; page-break-inside: auto; font-size: 12px; }
+                        tr { page-break-inside: avoid; page-break-after: auto; }
+                        thead { display: table-header-group; }
+                        th, td { border: 1px solid #000; padding: 6px 8px; text-align: left; color: #000; }
+                        th { background-color: #e8e8e8; font-weight: 700; text-align: center; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                        @page { size: A4 portrait; margin: 0; }
                     </style>
                 </head>
                 <body>
                     <div class="header">
-                        <h2>${headerText}</h2>
+                        <div class="header-top">
+                            <img src="/IMG_03611.png" alt="Logo SMK NU Donomulyo" class="header-logo" />
+                            <div class="header-text">
+                                <div class="school-name">SMK Nahdlatul Ulama Donomulyo</div>
+                                <div class="school-address">Jl. Raya Dawung, Tempursari Selatan, Tempursari, Kec. Donomulyo, Kab. Malang, Jawa Timur</div>
+                            </div>
+                        </div>
+                        <div class="report-title">${headerText}</div>
                     </div>
                     <table>
                         <thead>
