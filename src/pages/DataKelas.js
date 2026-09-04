@@ -988,7 +988,7 @@ const DataKelas = () => {
             <body>
                 <div class="header">
                     <div class="school-name">SMK Nahdlatul Ulama Donomulyo</div>
-                    <div class="school-address">Jl. Raya Donomulyo, Kec. Donomulyo, Kab. Malang, Jawa Timur</div>
+                    <div class="school-address">Jl. Raya Dawung, Tempursari Selatan, Tempursari, Kec. Donomulyo, Kab. Malang, Jawa Timur</div>
                     <div class="report-title">Laporan Data Siswa &amp; Rekap Absensi</div>
                     <div class="filter-info">
                         <span>Angkatan: <strong>${angkatanLabel}</strong></span> |
@@ -1084,7 +1084,7 @@ const DataKelas = () => {
             <body>
                 <div class="header">
                     <div class="school-name">SMK Nahdlatul Ulama Donomulyo</div>
-                    <div class="school-address">Jl. Raya Donomulyo, Kec. Donomulyo, Kab. Malang, Jawa Timur</div>
+                    <div class="school-address">Jl. Raya Dawung, Tempursari Selatan, Tempursari, Kec. Donomulyo, Kab. Malang, Jawa Timur</div>
                     <div class="report-title">Laporan Riwayat Absensi Siswa</div>
                     <div class="filter-info">
                         <span>Nama: <strong>${selectedSiswa.nama}</strong></span> |

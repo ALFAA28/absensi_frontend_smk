@@ -434,7 +434,7 @@ const Laporan = () => {
                 <div className="print-area">
                     <div className="print-only-header">
                         <h2 className="print-school-name">SMK Nahdlatul Ulama Donomulyo</h2>
-                        <p className="print-school-address">Jl. Raya Donomulyo, Kec. Donomulyo, Kab. Malang, Jawa Timur</p>
+                        <p className="print-school-address">Jl. Raya Dawung, Tempursari Selatan, Tempursari, Kec. Donomulyo, Kab. Malang, Jawa Timur</p>
                         <h3 className="print-report-title">Laporan Kehadiran Siswa</h3>
                         <p className="print-filter-info">
                             {currentAngkatanObj && <span>Angkatan: <strong>{currentAngkatanObj.name || currentAngkatanObj.year}</strong></span>}
