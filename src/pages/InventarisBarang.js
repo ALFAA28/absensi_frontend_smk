@@ -272,6 +272,7 @@ const InventarisBarang = () => {
                         .signature-area { display: flex; justify-content: space-around; margin-top: 50px; }
                         .signature { text-align: center; width: 200px; font-size: 14px; }
                         .signature p { margin-top: 80px; }
+                        @page { margin: 0; }
                     </style>
                 </head>
                 <body>
