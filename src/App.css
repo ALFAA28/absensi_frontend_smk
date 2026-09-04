@@ -169,9 +169,16 @@ body {
    GLOBAL PRINT STYLES
    ========================================= */
 @media print {
-  body, .app-container, .main-content {
-    background-color: white !important;
-    background: white !important;
+  html, body, #root, .app-container, .main-content {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    color-scheme: light !important;
+  }
+
+  /* Reset semua elemen agar background default-nya transparan/putih saat print */
+  * {
+    color-scheme: light !important;
   }
 
   .mobile-menu-btn,
