@@ -169,6 +169,11 @@ body {
    GLOBAL PRINT STYLES
    ========================================= */
 @media print {
+  body, .app-container, .main-content {
+    background-color: white !important;
+    background: white !important;
+  }
+
   .mobile-menu-btn,
   .sidebar {
     display: none !important;
