@@ -966,9 +966,18 @@ const DataKelas = () => {
                     .header { 
                         text-align: center; 
                         margin: 0 auto 20px auto; 
-                        padding-bottom: 14px; 
-                        border-bottom: 3px double #000; 
                     }
+                    .header-top { 
+                        display: flex; 
+                        align-items: center; 
+                        justify-content: center; 
+                        border-bottom: 3px double #000; 
+                        padding-bottom: 14px; 
+                        margin-bottom: 14px; 
+                        gap: 20px; 
+                    }
+                    .header-logo { width: 75px; height: auto; }
+                    .header-text { text-align: center; }
                     .header .school-name { font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 2px 0; }
                     .header .school-address { font-size: 11px; color: #333; margin: 0 0 10px 0; }
                     .header .report-title { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 10px 0 6px 0; }
@@ -987,8 +996,13 @@ const DataKelas = () => {
             </head>
             <body>
                 <div class="header">
-                    <div class="school-name">SMK Nahdlatul Ulama Donomulyo</div>
-                    <div class="school-address">Jl. Raya Dawung, Tempursari Selatan, Tempursari, Kec. Donomulyo, Kab. Malang, Jawa Timur</div>
+                    <div class="header-top">
+                        <img src="/IMG_03611.png" alt="Logo SMK NU Donomulyo" class="header-logo" />
+                        <div class="header-text">
+                            <div class="school-name">SMK Nahdlatul Ulama Donomulyo</div>
+                            <div class="school-address">Jl. Raya Dawung, Tempursari Selatan, Tempursari, Kec. Donomulyo, Kab. Malang, Jawa Timur</div>
+                        </div>
+                    </div>
                     <div class="report-title">Laporan Data Siswa &amp; Rekap Absensi</div>
                     <div class="filter-info">
                         <span>Angkatan: <strong>${angkatanLabel}</strong></span> |
@@ -1063,9 +1077,18 @@ const DataKelas = () => {
                     .header { 
                         text-align: center; 
                         margin: 0 auto 20px auto; 
-                        padding-bottom: 14px; 
-                        border-bottom: 3px double #000; 
                     }
+                    .header-top { 
+                        display: flex; 
+                        align-items: center; 
+                        justify-content: center; 
+                        border-bottom: 3px double #000; 
+                        padding-bottom: 14px; 
+                        margin-bottom: 14px; 
+                        gap: 20px; 
+                    }
+                    .header-logo { width: 75px; height: auto; }
+                    .header-text { text-align: center; }
                     .header .school-name { font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 2px 0; }
                     .header .school-address { font-size: 11px; color: #333; margin: 0 0 10px 0; }
                     .header .report-title { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 10px 0 6px 0; }
@@ -1083,8 +1106,13 @@ const DataKelas = () => {
             </head>
             <body>
                 <div class="header">
-                    <div class="school-name">SMK Nahdlatul Ulama Donomulyo</div>
-                    <div class="school-address">Jl. Raya Dawung, Tempursari Selatan, Tempursari, Kec. Donomulyo, Kab. Malang, Jawa Timur</div>
+                    <div class="header-top">
+                        <img src="/IMG_03611.png" alt="Logo SMK NU Donomulyo" class="header-logo" />
+                        <div class="header-text">
+                            <div class="school-name">SMK Nahdlatul Ulama Donomulyo</div>
+                            <div class="school-address">Jl. Raya Dawung, Tempursari Selatan, Tempursari, Kec. Donomulyo, Kab. Malang, Jawa Timur</div>
+                        </div>
+                    </div>
                     <div class="report-title">Laporan Riwayat Absensi Siswa</div>
                     <div class="filter-info">
                         <span>Nama: <strong>${selectedSiswa.nama}</strong></span> |

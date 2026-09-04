@@ -433,8 +433,13 @@ const Laporan = () => {
                 {/* TABEL DATA LAPORAN (Print Area) */}
                 <div className="print-area">
                     <div className="print-only-header">
-                        <h2 className="print-school-name">SMK Nahdlatul Ulama Donomulyo</h2>
-                        <p className="print-school-address">Jl. Raya Dawung, Tempursari Selatan, Tempursari, Kec. Donomulyo, Kab. Malang, Jawa Timur</p>
+                        <div className="print-header-top">
+                            <img src="/IMG_03611.png" alt="Logo SMK NU Donomulyo" className="print-header-logo" />
+                            <div className="print-header-text">
+                                <h2 className="print-school-name">SMK Nahdlatul Ulama Donomulyo</h2>
+                                <p className="print-school-address">Jl. Raya Dawung, Tempursari Selatan, Tempursari, Kec. Donomulyo, Kab. Malang, Jawa Timur</p>
+                            </div>
+                        </div>
                         <h3 className="print-report-title">Laporan Kehadiran Siswa</h3>
                         <p className="print-filter-info">
                             {currentAngkatanObj && <span>Angkatan: <strong>{currentAngkatanObj.name || currentAngkatanObj.year}</strong></span>}
