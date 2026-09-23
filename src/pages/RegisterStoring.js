@@ -8,9 +8,10 @@ const RegisterStoring = () => {
   const [formData, setFormData] = useState({
     nama: '',
     email: '',
-    nrg: '',
     password: ''
   });
+  
+  const [showPassword, setShowPassword] = useState(false);
   
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -34,12 +35,6 @@ const RegisterStoring = () => {
       return;
     }
 
-    if (!formData.nrg) {
-      setError('Nomor Registrasi Guru (NRG) wajib diisi.');
-      setIsLoading(false);
-      return;
-    }
-
     try {
       const response = await fetch(`${API_URL}/register`, {
         method: 'POST',
@@ -50,7 +45,6 @@ const RegisterStoring = () => {
         body: JSON.stringify({
           nama: formData.nama,
           email: formData.email,
-          nrg: formData.nrg,
           password: formData.password,
           app_source: 'storing' // Penanda bahwa akun ini dari web storing
         })
@@ -126,33 +120,37 @@ const RegisterStoring = () => {
                 </div>
               </div>
 
-              <div className="input-group">
-                <label htmlFor="nrg">Nomor Registrasi Guru (NRG)</label>
-                <div className="input-icon-wrapper">
-                  <FiHash className="input-icon" />
-                  <input
-                    type="text"
-                    id="nrg"
-                    placeholder="Masukkan NRG Anda"
-                    value={formData.nrg}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
 
-              <div className="input-group">
+
+              <div className="input-group relative">
                 <label htmlFor="password">Password</label>
                 <div className="input-icon-wrapper">
                   <FiLock className="input-icon" />
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     id="password"
                     placeholder="Minimal 6 karakter"
                     value={formData.password}
                     onChange={handleChange}
                     required
+                    style={{ paddingRight: '40px' }}
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{
+                      position: 'absolute',
+                      right: '12px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: 'var(--text-secondary)'
+                    }}
+                  >
+                    {showPassword ? '👁️' : '👁️‍🗨️'}
+                  </button>
                 </div>
               </div>
 
