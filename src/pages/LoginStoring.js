@@ -49,7 +49,7 @@ const LoginStoring = () => {
         localStorage.setItem('classroomId', data.user.classroom_id || '');
 
         // Arahkan ke Storing Modul
-        let baseRedirect = process.env.REACT_APP_STORING_URL || 'https://modul-sekolah.vercel.app';
+        let baseRedirect = process.env.REACT_APP_STORING_URL || 'https://storing-modul-main.vercel.app';
         baseRedirect = baseRedirect.replace(/\/+$/, '');
         // If redirectUrl from query is a localhost URL, override it in production (prevent wrong redirect)
         const isLocalhost = redirectUrl && redirectUrl.includes('localhost');
