@@ -30,6 +30,7 @@ const Register = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -157,16 +158,30 @@ const Register = () => {
 
               <div className="input-group">
                 <label htmlFor="password">Password</label>
-                <div className="input-icon-wrapper">
+                <div className="input-icon-wrapper" style={{ position: 'relative' }}>
                   <FiLock className="input-icon" />
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     id="password"
                     placeholder="Minimal 6 karakter"
                     value={formData.password}
                     onChange={handleChange}
                     required
+                    style={{ paddingRight: '40px' }}
                   />
+                  <span 
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{ 
+                      position: 'absolute', 
+                      right: '12px', 
+                      top: '50%', 
+                      transform: 'translateY(-50%)', 
+                      cursor: 'pointer',
+                      color: '#94a3b8' 
+                    }}
+                  >
+                    {showPassword ? 'Tutup' : 'Lihat'}
+                  </span>
                 </div>
               </div>
 
