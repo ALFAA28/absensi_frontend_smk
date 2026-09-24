@@ -21,6 +21,8 @@ const Laporan = () => {
     const [filterSemester, setFilterSemester] = useState('');
     const [filterTahun, setFilterTahun] = useState(new Date().getFullYear().toString());
     const [searchTerm, setSearchTerm] = useState('');
+    const [sortStatusTerbanyak, setSortStatusTerbanyak] = useState(''); // State untuk filter urutan terbanyak
+
 
     // --- STATE EDIT ABSENSI ---
     const [showEditAbsensiModal, setShowEditAbsensiModal] = useState(false);
@@ -193,6 +195,37 @@ const Laporan = () => {
     // Data sudah difilter server-side, langsung gunakan laporan
     // (tetap ada fallback client-side filter untuk responsivitas)
     const filteredLaporan = laporan;
+
+    // --- LOGIKA REKAPITULASI DAN PENGURUTAN TERBANYAK ---
+    const summaryData = {};
+    if (sortStatusTerbanyak) {
+        filteredLaporan.forEach(item => {
+            if (!summaryData[item.nisn]) {
+                summaryData[item.nisn] = {
+                    nisn: item.nisn,
+                    nama_siswa: item.nama_siswa,
+                    kelas_siswa: item.kelas_siswa,
+                    Hadir: 0,
+                    Izin: 0,
+                    Sakit: 0,
+                    Alfa: 0,
+                    Total: 0
+                };
+            }
+            let status = item.status_kehadiran ? item.status_kehadiran.toLowerCase() : '';
+            if (status === 'hadir') summaryData[item.nisn].Hadir++;
+            else if (status === 'izin' || status === 'ijin') summaryData[item.nisn].Izin++;
+            else if (status === 'sakit') summaryData[item.nisn].Sakit++;
+            else if (status === 'alfa' || status === 'alpha') summaryData[item.nisn].Alfa++;
+            
+            summaryData[item.nisn].Total++;
+        });
+    }
+
+    const rekapData = sortStatusTerbanyak 
+        ? Object.values(summaryData).sort((a, b) => b[sortStatusTerbanyak] - a[sortStatusTerbanyak])
+        : [];
+
 
     const handleEditAbsensi = (abs) => {
         setSelectedEditAbsensi(abs);
@@ -428,6 +461,25 @@ const Laporan = () => {
                             />
                         </div>
                     </div>
+
+                    {/* 7. URUTKAN TERBANYAK (REKAP) */}
+                    <div className="filter-group">
+                        <label style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: '700', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <FiFilter /> Rekap & Urutkan
+                        </label>
+                        <select
+                            className="modern-input"
+                            value={sortStatusTerbanyak}
+                            onChange={(e) => setSortStatusTerbanyak(e.target.value)}
+                            style={{ width: '100%' }}
+                        >
+                            <option value="">Riwayat (Default)</option>
+                            <option value="Hadir">Terbanyak Hadir</option>
+                            <option value="Izin">Terbanyak Izin/Ijin</option>
+                            <option value="Sakit">Terbanyak Sakit</option>
+                            <option value="Alfa">Terbanyak Alfa</option>
+                        </select>
+                    </div>
                 </div>
 
                 {/* TABEL DATA LAPORAN (Print Area) */}
@@ -456,34 +508,62 @@ const Laporan = () => {
                     <div className="table-container">
                         <table className="kelas-table">
                             <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Tanggal</th>
-                                    <th>NISN</th>
-                                    <th>Nama Siswa</th>
-                                    <th>Kelas</th>
-                                    <th>Kehadiran</th>
-                                    <th>Keterangan</th>
-                                    <th className="no-print">Aksi</th>
-                                </tr>
+                                {sortStatusTerbanyak ? (
+                                    <tr>
+                                        <th>No</th>
+                                        <th>NISN</th>
+                                        <th>Nama Siswa</th>
+                                        <th>Kelas</th>
+                                        <th>Hadir</th>
+                                        <th>Izin</th>
+                                        <th>Sakit</th>
+                                        <th>Alfa</th>
+                                        <th>Total Record</th>
+                                    </tr>
+                                ) : (
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Tanggal</th>
+                                        <th>NISN</th>
+                                        <th>Nama Siswa</th>
+                                        <th>Kelas</th>
+                                        <th>Kehadiran</th>
+                                        <th>Keterangan</th>
+                                        <th className="no-print">Aksi</th>
+                                    </tr>
+                                )}
                             </thead>
                             <tbody>
                                 {isLoading ? (
                                     <tr>
-                                        <td colSpan="8" style={{ textAlign: 'center', padding: '20px' }}>Memuat data laporan...</td>
+                                        <td colSpan={sortStatusTerbanyak ? 9 : 8} style={{ textAlign: 'center', padding: '20px' }}>Memuat data laporan...</td>
                                     </tr>
                                 ) : isFirstLoad && filteredLaporan.length === 0 ? (
                                     <tr>
-                                        <td colSpan="8" style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-secondary)', fontWeight: '500' }}>
+                                        <td colSpan={sortStatusTerbanyak ? 9 : 8} style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-secondary)', fontWeight: '500' }}>
                                             Silakan pilih filter di atas atau ketik Nama/NISN siswa untuk menampilkan data laporan.
                                         </td>
                                     </tr>
                                 ) : filteredLaporan.length === 0 ? (
                                     <tr>
-                                        <td colSpan="8" style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-secondary)', fontWeight: '500' }}>
+                                        <td colSpan={sortStatusTerbanyak ? 9 : 8} style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-secondary)', fontWeight: '500' }}>
                                             Tidak ada data kehadiran yang sesuai filter.
                                         </td>
                                     </tr>
+                                ) : sortStatusTerbanyak ? (
+                                    rekapData.map((item, index) => (
+                                        <tr key={item.nisn}>
+                                            <td>{index + 1}</td>
+                                            <td>{item.nisn}</td>
+                                            <td>{item.nama_siswa || '-'}</td>
+                                            <td>{item.kelas_siswa || '-'}</td>
+                                            <td style={{ fontWeight: sortStatusTerbanyak === 'Hadir' ? 'bold' : 'normal', color: sortStatusTerbanyak === 'Hadir' ? '#10b981' : 'inherit' }}>{item.Hadir}</td>
+                                            <td style={{ fontWeight: sortStatusTerbanyak === 'Izin' ? 'bold' : 'normal', color: sortStatusTerbanyak === 'Izin' ? '#f59e0b' : 'inherit' }}>{item.Izin}</td>
+                                            <td style={{ fontWeight: sortStatusTerbanyak === 'Sakit' ? 'bold' : 'normal', color: sortStatusTerbanyak === 'Sakit' ? '#3b82f6' : 'inherit' }}>{item.Sakit}</td>
+                                            <td style={{ fontWeight: sortStatusTerbanyak === 'Alfa' ? 'bold' : 'normal', color: sortStatusTerbanyak === 'Alfa' ? '#ef4444' : 'inherit' }}>{item.Alfa}</td>
+                                            <td>{item.Total}</td>
+                                        </tr>
+                                    ))
                                 ) : (
                                     filteredLaporan.map((item, index) => (
                                         <tr key={item.id || index}>
