@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaEnvelope, FaLock, FaSignInAlt, FaArrowLeft } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaSignInAlt, FaArrowLeft, FaEye, FaEyeSlash } from 'react-icons/fa';
 import './Login.css';
 import { API_URL } from '../config';
 
@@ -9,6 +9,7 @@ const LoginStoring = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const searchParams = new URLSearchParams(window.location.search);
   const redirectUrl = searchParams.get('redirect');
@@ -48,7 +49,11 @@ const LoginStoring = () => {
         localStorage.setItem('classroomId', data.user.classroom_id || '');
 
         // Arahkan ke Storing Modul
-        const finalRedirectUrl = redirectUrl ? redirectUrl : 'https://storing-modul-main.vercel.app/sso-callback';
+        let baseRedirect = process.env.REACT_APP_STORING_URL || 'https://storing-modul-main.vercel.app';
+        baseRedirect = baseRedirect.replace(/\/+$/, '');
+        // If redirectUrl from query is a localhost URL, override it in production (prevent wrong redirect)
+        const isLocalhost = redirectUrl && redirectUrl.includes('localhost');
+        const finalRedirectUrl = (redirectUrl && !isLocalhost) ? redirectUrl : `${baseRedirect}/sso-callback`;
         window.location.href = `${finalRedirectUrl}?token=${data.token}`;
       } else {
         setError(data.message || 'Email atau password tidak valid.');
@@ -91,16 +96,30 @@ const LoginStoring = () => {
 
           <div className="input-group">
             <label htmlFor="password">Password</label>
-            <div className="input-icon-wrapper">
+            <div className="input-icon-wrapper" style={{ position: 'relative' }}>
               <FaLock className="input-icon" />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 placeholder="Masukkan password anda"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                style={{ paddingRight: '40px' }}
               />
+              <span 
+                onClick={() => setShowPassword(!showPassword)}
+                style={{ 
+                  position: 'absolute', 
+                  right: '12px', 
+                  top: '50%', 
+                  transform: 'translateY(-50%)', 
+                  cursor: 'pointer',
+                  color: '#94a3b8' 
+                }}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
             </div>
           </div>
 

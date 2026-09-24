@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaEnvelope, FaLock, FaSignInAlt } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaSignInAlt, FaEye, FaEyeSlash } from 'react-icons/fa';
 import './Login.css';
 import { API_URL } from '../config';
 
@@ -9,6 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [loginTarget, setLoginTarget] = useState(null);
 
@@ -124,16 +125,30 @@ const Login = () => {
 
           <div className="input-group">
             <label htmlFor="password">Password</label>
-            <div className="input-icon-wrapper">
+            <div className="input-icon-wrapper" style={{ position: 'relative' }}>
               <FaLock className="input-icon" />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 placeholder="Masukkan password anda"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                style={{ paddingRight: '40px' }}
               />
+              <span 
+                onClick={() => setShowPassword(!showPassword)}
+                style={{ 
+                  position: 'absolute', 
+                  right: '12px', 
+                  top: '50%', 
+                  transform: 'translateY(-50%)', 
+                  cursor: 'pointer',
+                  color: '#94a3b8' 
+                }}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
             </div>
           </div>
 
