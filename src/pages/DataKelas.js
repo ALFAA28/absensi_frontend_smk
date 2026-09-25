@@ -1299,7 +1299,7 @@ const DataKelas = () => {
                                 <FiSearch className="search-icon" />
                                 <input type="text" placeholder="Cari..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                             </div>
-                            {(userRole === 'admin' || (userRole === 'wali_kelas' && currentView === 'jurusan')) && (
+                            {(userRole === 'admin' || userRole === 'guru_piket' || (userRole === 'wali_kelas' && currentView === 'jurusan')) && (
                                 <button className="btn-add" onClick={() => currentView === 'angkatan' ? setShowModalAngkatan(true) : setShowModalJurusan(true)}>
                                     <FiPlus className="icon-left" /> Tambah Data
                                 </button>
@@ -1317,7 +1317,7 @@ const DataKelas = () => {
                                         <h3>{currentView === 'angkatan' ? item.name : item.nama_jurusan}</h3>
                                         <p>{currentView === 'angkatan' ? `Tahun: ${item.year}` : `Singkatan: ${item.singkatan || '-'}`}</p>
                                     </div>
-                                    {(userRole === 'admin' || (userRole === 'wali_kelas' && currentView === 'jurusan')) && (
+                                    {(userRole === 'admin' || userRole === 'guru_piket' || (userRole === 'wali_kelas' && currentView === 'jurusan')) && (
                                         <div className="folder-actions" style={{ display: 'flex', gap: '8px', zIndex: 2 }}>
                                             <button
                                                 className="btn-action btn-edit"
@@ -1364,7 +1364,7 @@ const DataKelas = () => {
                             </div>
                         </div>
 
-                        {(userRole === 'admin' || Number(userClassroomId) === Number(selectedJurusan?.id)) && (
+                        {(userRole === 'admin' || userRole === 'guru_piket' || Number(userClassroomId) === Number(selectedJurusan?.id)) && (
                             <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <div className="search-box">
                                     <FiSearch className="search-icon" />
@@ -1458,7 +1458,7 @@ const DataKelas = () => {
                                                         <span style={{ color: 'var(--danger-color)', fontWeight: 'bold' }}>{rekap.alfa}</span>
                                                     </td>
                                                     <td>
-                                                        {(userRole === 'admin' || Number(userClassroomId) === Number(selectedJurusan?.id)) ? (
+                                                        {(userRole === 'admin' || userRole === 'guru_piket' || Number(userClassroomId) === Number(selectedJurusan?.id)) ? (
                                                             <div className="folder-actions" style={{ display: 'flex', gap: '8px' }}>
                                                                 <button className="btn-action btn-edit" title="Edit Siswa" onClick={() => handleEditSiswa(item)}><FiEdit2 /></button>
                                                                 <button className="btn-action btn-delete" title="Hapus Siswa" onClick={() => handleHapusSiswa(item.id, item.nama)}><FiTrash2 /></button>
@@ -1515,7 +1515,7 @@ const DataKelas = () => {
                                     </span>
                                 </p>
 
-                                {(userRole === 'admin' || Number(userClassroomId) === Number(selectedJurusan?.id)) && (
+                                {(userRole === 'admin' || userRole === 'guru_piket' || Number(userClassroomId) === Number(selectedJurusan?.id)) && (
                                     <div className="profil-status-control" style={{ marginTop: '12px' }}>
                                         <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '6px', fontSize: '13px' }}>Ubah Status Akademik Siswa:</label>
                                         <select
