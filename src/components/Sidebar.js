@@ -58,7 +58,7 @@ const Sidebar = ({ isOpen, toggleSidebar, closeSidebar }) => {
         )}
 
         {/* Link eksternal ke Web Storing Modul (Tidak untuk Admin Absensi) */}
-        {(role === 'wali_kelas' || role === 'guru_mapel' || role === 'guru_piket' || role === 'guru') && (
+        {(role === 'wali_kelas' || role === 'guru_mapel' || role === 'guru') && (
           <a href="https://storing-modul-main.vercel.app" target="_blank" rel="noopener noreferrer" className="nav-item">
             <FiFileText className="nav-icon" />
             <span>Arsip Modul (Web Baru)</span>
