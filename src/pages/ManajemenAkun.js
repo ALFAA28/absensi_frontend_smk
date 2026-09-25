@@ -256,8 +256,7 @@ const ManajemenAkun = () => {
     } else if (role === 'guru_piket') {
       return <span style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#047857', padding: '4px 12px', borderRadius: '20px', fontWeight: '700', fontSize: '12px' }}>Guru Piket</span>;
     } else {
-      // default guru mapel
-      return <span style={{ background: 'var(--border-color)', color: 'var(--text-secondary)', padding: '4px 12px', borderRadius: '20px', fontWeight: '700', fontSize: '12px' }}>Guru Mapel</span>;
+      return <span style={{ background: 'var(--border-color)', color: 'var(--text-secondary)', padding: '4px 12px', borderRadius: '20px', fontWeight: '700', fontSize: '12px' }}>{role}</span>;
     }
   };
 
@@ -431,7 +430,6 @@ const ManajemenAkun = () => {
                   style={{ width: '100%' }}
                 >
                   <option value="guru_piket">Guru Piket</option>
-                  <option value="guru_mapel">Guru Mata Pelajaran</option>
                   <option value="wali_kelas">Wali Kelas</option>
                   <option value="sarpras">Pengelola Sarpras</option>
                   <option value="admin">Admin System</option>
