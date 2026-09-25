@@ -34,7 +34,7 @@ const Sidebar = ({ isOpen, toggleSidebar, closeSidebar }) => {
         </NavLink>
 
         {/* Data Kelas & Absensi MUNCUL untuk Admin, Wali Kelas, Guru Mapel, dan Guru */}
-        {(role === 'admin' || role === 'wali_kelas' || role === 'guru_mapel' || role === 'guru') && (
+        {(role === 'admin' || role === 'wali_kelas' || role === 'guru_mapel' || role === 'guru_piket' || role === 'guru') && (
           <NavLink to="/DataKelas" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'} onClick={handleMenuClick}>
             <FiUsers className="nav-icon" />
             <span>Data Kelas & Absensi</span>
@@ -58,7 +58,7 @@ const Sidebar = ({ isOpen, toggleSidebar, closeSidebar }) => {
         )}
 
         {/* Link eksternal ke Web Storing Modul (Tidak untuk Admin Absensi) */}
-        {(role === 'wali_kelas' || role === 'guru_mapel' || role === 'guru') && (
+        {(role === 'wali_kelas' || role === 'guru_mapel' || role === 'guru_piket' || role === 'guru') && (
           <a href="https://storing-modul-main.vercel.app" target="_blank" rel="noopener noreferrer" className="nav-item">
             <FiFileText className="nav-icon" />
             <span>Arsip Modul (Web Baru)</span>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiMail, FiLock, FiUser, FiBook, FiUserPlus, FiCheckCircle } from 'react-icons/fi';
+import { FiMail, FiLock, FiUser, FiUserPlus, FiCheckCircle } from 'react-icons/fi';
 import './Register.css';
 import { API_URL } from '../config';
 
@@ -8,25 +8,8 @@ const Register = () => {
   const [formData, setFormData] = useState({
     nama: '',
     email: '',
-    password: '',
-    classroom_id: ''
+    password: ''
   });
-  const [classrooms, setClassrooms] = useState([]);
-
-  useEffect(() => {
-    const fetchClassrooms = async () => {
-      try {
-        const response = await fetch(`${API_URL}/classrooms/public`);
-        if (response.ok) {
-          const data = await response.json();
-          setClassrooms(data);
-        }
-      } catch (err) {
-        console.error("Gagal mengambil data kelas:", err);
-      }
-    };
-    fetchClassrooms();
-  }, []);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -61,7 +44,6 @@ const Register = () => {
           nama: formData.nama,
           email: formData.email,
           password: formData.password,
-          classroom_id: formData.classroom_id || null,
           app_source: 'absensi'
         })
       });
@@ -136,25 +118,6 @@ const Register = () => {
                 </div>
               </div>
 
-              <div className="input-group">
-                <label htmlFor="classroom_id">Kelas Binaan Wali Kelas (Opsional)</label>
-                <div className="input-icon-wrapper">
-                  <FiBook className="input-icon" />
-                  <select
-                    id="classroom_id"
-                    value={formData.classroom_id || ''}
-                    onChange={handleChange}
-                    className="modern-input"
-                  >
-                    <option value="">-- Bukan Wali Kelas / Pilih Kelas Binaan --</option>
-                    {classrooms.map(cls => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.name} ({cls.singkatan})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
 
               <div className="input-group">
                 <label htmlFor="password">Password</label>
