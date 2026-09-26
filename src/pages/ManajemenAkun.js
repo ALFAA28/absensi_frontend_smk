@@ -316,7 +316,6 @@ const ManajemenAkun = () => {
               <th>No</th>
               <th>Nama / NRG</th>
               <th>Email</th>
-              <th>Kelas / Jurusan</th>
               <th>Role / Peran</th>
               <th>Sumber</th>
               <th>Status</th>
