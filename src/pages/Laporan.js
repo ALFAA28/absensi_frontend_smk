@@ -217,12 +217,12 @@ const Laporan = () => {
             else if (status === 'izin' || status === 'ijin') summaryData[item.nisn].Izin++;
             else if (status === 'sakit') summaryData[item.nisn].Sakit++;
             else if (status === 'alfa' || status === 'alpha') summaryData[item.nisn].Alfa++;
-            
+
             summaryData[item.nisn].Total++;
         });
     }
 
-    const rekapData = sortStatusTerbanyak 
+    const rekapData = sortStatusTerbanyak
         ? Object.values(summaryData).sort((a, b) => b[sortStatusTerbanyak] - a[sortStatusTerbanyak])
         : [];
 
@@ -303,9 +303,7 @@ const Laporan = () => {
         <div className="data-kelas-container">
             {/* BREADCRUMB */}
             <div className="breadcrumb no-print">
-                <span className="clickable">Manajemen</span>
-                <FiChevronRight className="breadcrumb-icon" />
-                <span className="active">Laporan Absensi</span>
+                <span className="active">Laporan</span>
             </div>
 
             {/* HEADER */}
