@@ -309,7 +309,7 @@ const Laporan = () => {
             {/* HEADER */}
             <div className="page-header no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div className="header-left">
-                    <h2><FiFileText style={{ marginRight: '8px' }} /> Laporan Absensi</h2>
+                    <h2><FiFileText style={{ marginRight: '8px' }} /> Laporan</h2>
                 </div>
                 <div>
                     <button className="btn-add no-print" onClick={handlePrint} style={{ background: 'linear-gradient(135deg, var(--primary-color), #6366f1)', border: 'none', padding: '10px 20px', borderRadius: 'var(--radius-sm)', color: 'white', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(79, 70, 229, 0.25)' }}>
