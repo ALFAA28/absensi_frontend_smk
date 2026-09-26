@@ -33,8 +33,8 @@ const Sidebar = ({ isOpen, toggleSidebar, closeSidebar }) => {
             <span>Dashboard</span>
           </NavLink>
 
-          {/* Data Kelas & Absensi MUNCUL untuk Admin, Wali Kelas, Guru Mapel, dan Guru */}
-          {(role === 'admin' || role === 'wali_kelas' || role === 'guru_piket' || role === 'guru') && (
+          {/* Data Kelas & Absensi MUNCUL untuk Admin dan Guru Piket */}
+          {(role === 'admin' || role === 'guru_piket') && (
             <NavLink to="/DataKelas" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'} onClick={handleMenuClick}>
               <FiUsers className="nav-icon" />
               <span>Data Kelas & Absensi</span>

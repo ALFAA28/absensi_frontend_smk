@@ -182,7 +182,7 @@ const DataKelas = () => {
 
     useEffect(() => {
         fetchAllData();
-        
+
         // Initialize current state in history
         window.history.replaceState({ view: 'angkatan', angkatan: null, jurusan: null, siswa: null }, '');
 
@@ -250,7 +250,7 @@ const DataKelas = () => {
             const data = await response.json();
             if (response.ok) {
                 toast.success(data.message || `Status siswa berhasil diubah!`);
-                
+
                 // Optimasi: Update state lokal tanpa fetch ulang semua data
                 setDataSiswa(prevSiswa => {
                     const updatedSiswa = prevSiswa.map(siswa => {
@@ -1036,7 +1036,7 @@ const DataKelas = () => {
         });
 
         htmlContent += `</tbody></table></body></html>`;
-        
+
         const iframe = document.createElement('iframe');
         // Gunakan posisi absolute dan ukuran 100% agar tabel bisa mengambil lebar penuh halaman
         iframe.style.position = 'absolute';
@@ -1282,7 +1282,7 @@ const DataKelas = () => {
                     <h2>
                         {currentView === 'angkatan' && 'Daftar Angkatan'}
                         {currentView === 'jurusan' && `Jurusan - ${selectedAngkatan?.name}`}
-                        {currentView === 'siswa' && `Data Siswa & Absensi Mapel - ${selectedJurusan?.nama_jurusan}`}
+                        {currentView === 'siswa' && `Data Siswa & Absensi - ${selectedJurusan?.nama_jurusan}`}
                         {currentView === 'detail_siswa' && `Detail & Absensi Siswa`}
                     </h2>
                 </div>
@@ -1299,7 +1299,7 @@ const DataKelas = () => {
                                 <FiSearch className="search-icon" />
                                 <input type="text" placeholder="Cari..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                             </div>
-                            {(userRole === 'admin' || ((userRole === 'guru_piket' || userRole === 'wali_kelas') && currentView === 'jurusan')) && (
+                            {(userRole === 'admin' || (userRole === 'guru_piket' && currentView === 'jurusan')) && (
                                 <button className="btn-add" onClick={() => currentView === 'angkatan' ? setShowModalAngkatan(true) : setShowModalJurusan(true)}>
                                     <FiPlus className="icon-left" /> Tambah Data
                                 </button>
@@ -1317,7 +1317,7 @@ const DataKelas = () => {
                                         <h3>{currentView === 'angkatan' ? item.name : item.nama_jurusan}</h3>
                                         <p>{currentView === 'angkatan' ? `Tahun: ${item.year}` : `Singkatan: ${item.singkatan || '-'}`}</p>
                                     </div>
-                                    {(userRole === 'admin' || ((userRole === 'guru_piket' || userRole === 'wali_kelas') && currentView === 'jurusan')) && (
+                                    {(userRole === 'admin' || (userRole === 'guru_piket' && currentView === 'jurusan')) && (
                                         <div className="folder-actions" style={{ display: 'flex', gap: '8px', zIndex: 2 }}>
                                             <button
                                                 className="btn-action btn-edit"
@@ -1420,7 +1420,7 @@ const DataKelas = () => {
                                                                 {item.status_keterangan || 'Nonaktif'}
                                                             </span>
                                                         )}
-                                                     </td>
+                                                    </td>
                                                     <td>{item.kelas}</td>
                                                     <td>
                                                         {item.status === 'Nonaktif' ? (
@@ -1440,13 +1440,13 @@ const DataKelas = () => {
                                                                     <option value="Sakit">Sakit</option>
                                                                     <option value="Alfa">Alfa</option>
                                                                 </select>
-                                                                <input 
-                                                                    type="text" 
-                                                                    className="modern-input" 
-                                                                    placeholder="Keterangan (Opsional)" 
-                                                                    value={absensiKeteranganMassal[item.id] || ''} 
-                                                                    onChange={(e) => setAbsensiKeteranganMassal({ ...absensiKeteranganMassal, [item.id]: e.target.value })} 
-                                                                    style={{ padding: '6px 12px', width: '140px', fontSize: '12px' }} 
+                                                                <input
+                                                                    type="text"
+                                                                    className="modern-input"
+                                                                    placeholder="Keterangan (Opsional)"
+                                                                    value={absensiKeteranganMassal[item.id] || ''}
+                                                                    onChange={(e) => setAbsensiKeteranganMassal({ ...absensiKeteranganMassal, [item.id]: e.target.value })}
+                                                                    style={{ padding: '6px 12px', width: '140px', fontSize: '12px' }}
                                                                 />
                                                             </>
                                                         )}

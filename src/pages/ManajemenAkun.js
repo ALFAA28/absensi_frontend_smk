@@ -184,7 +184,7 @@ const ManajemenAkun = () => {
         },
         body: JSON.stringify({
           role: editRole,
-          classroom_id: editRole === 'wali_kelas' ? editClassroomId : null,
+          classroom_id: null,
           app_source: editAppSource,
           nrg: editNrg || null
         })
@@ -251,8 +251,6 @@ const ManajemenAkun = () => {
       return <span style={{ background: 'var(--primary-light)', color: 'var(--primary-hover)', padding: '4px 12px', borderRadius: '20px', fontWeight: '700', fontSize: '12px' }}>Admin</span>;
     } else if (role === 'sarpras') {
       return <span style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#b45309', padding: '4px 12px', borderRadius: '20px', fontWeight: '700', fontSize: '12px' }}>Sarpras</span>;
-    } else if (role === 'wali_kelas') {
-      return <span style={{ background: 'rgba(59, 130, 246, 0.15)', color: 'var(--info-color)', padding: '4px 12px', borderRadius: '20px', fontWeight: '700', fontSize: '12px' }}>Wali Kelas</span>;
     } else if (role === 'guru_piket') {
       return <span style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#047857', padding: '4px 12px', borderRadius: '20px', fontWeight: '700', fontSize: '12px' }}>Guru Piket</span>;
     } else {
@@ -430,31 +428,12 @@ const ManajemenAkun = () => {
                   style={{ width: '100%' }}
                 >
                   <option value="guru_piket">Guru Piket</option>
-                  <option value="wali_kelas">Wali Kelas</option>
                   <option value="sarpras">Pengelola Sarpras</option>
                   <option value="admin">Admin System</option>
                 </select>
               </div>
 
-              {editRole === 'wali_kelas' && (
-                <div className="form-group" style={{ marginBottom: '16px' }}>
-                  <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold', fontSize: '13px' }}>Kelas Binaan Wali Kelas</label>
-                  <select
-                    className="modern-input"
-                    value={editClassroomId}
-                    onChange={(e) => setEditClassroomId(e.target.value)}
-                    style={{ width: '100%' }}
-                    required
-                  >
-                    <option value="">-- Pilih Kelas Binaan --</option>
-                    {classrooms.map(cls => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.name} ({cls.singkatan})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
+
 
               <div className="modal-actions" style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
                 <button type="button" className="btn-cancel" onClick={() => setShowEditModal(false)}>Batal</button>

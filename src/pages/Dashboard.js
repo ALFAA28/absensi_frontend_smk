@@ -37,7 +37,7 @@ const Dashboard = () => {
         };
 
         // Sekuensial: setiap response langsung di-set ke state (render progresif)
-        // scope=all agar dashboard menampilkan data seluruh kelas (termasuk untuk wali_kelas)
+        // scope=all agar dashboard menampilkan data seluruh kelas
         const resClassrooms = await fetch(`${API_URL}/classrooms?scope=all`, { headers });
         if (resClassrooms.ok) {
           const classData = await resClassrooms.json();
