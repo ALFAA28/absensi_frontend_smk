@@ -880,6 +880,16 @@ const DataKelas = () => {
         const file = e.target.files[0];
         if (!file) return;
 
+        // Validasi format file Excel
+        const allowedExtensions = ['.xlsx', '.xls'];
+        const fileName = file.name.toLowerCase();
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.'));
+        if (!allowedExtensions.includes(fileExtension)) {
+            toast.error("Format file tidak didukung! Harap gunakan file Excel (.xlsx atau .xls)");
+            e.target.value = null;
+            return;
+        }
+
         const reader = new FileReader();
         reader.onload = async (evt) => {
             try {
