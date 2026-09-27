@@ -36,28 +36,34 @@ const Dashboard = () => {
           'Accept': 'application/json'
         };
 
-        // Sekuensial: setiap response langsung di-set ke state (render progresif)
-        // scope=all agar dashboard menampilkan data seluruh kelas
-        const resClassrooms = await fetch(`${API_URL}/classrooms?scope=all`, { headers });
-        if (resClassrooms.ok) {
-          const classData = await resClassrooms.json();
-          setClassrooms(classData);
-          localStorage.setItem('cached_classrooms', JSON.stringify(classData));
-        }
+        // Eksekusi request secara paralel (bersamaan) untuk optimasi kecepatan
+        const fetchClassrooms = fetch(`${API_URL}/classrooms?scope=all`, { headers })
+          .then(res => res.ok ? res.json() : Promise.reject(res))
+          .then(classData => {
+            setClassrooms(classData);
+            localStorage.setItem('cached_classrooms', JSON.stringify(classData));
+          })
+          .catch(err => console.error("Gagal load classrooms", err));
 
-        const resStudents = await fetch(`${API_URL}/students?scope=all`, { headers });
-        if (resStudents.ok) {
-          const studData = await resStudents.json();
-          setStudents(studData);
-          localStorage.setItem('cached_students', JSON.stringify(studData));
-        }
+        const fetchStudents = fetch(`${API_URL}/students?scope=all`, { headers })
+          .then(res => res.ok ? res.json() : Promise.reject(res))
+          .then(studData => {
+            setStudents(studData);
+            localStorage.setItem('cached_students', JSON.stringify(studData));
+          })
+          .catch(err => console.error("Gagal load students", err));
 
-        const resAttendances = await fetch(`${API_URL}/attendance?scope=all&tanggal=${today}`, { headers });
-        if (resAttendances.ok) {
-          const attData = await resAttendances.json();
-          setAttendances(attData);
-          localStorage.setItem('cached_dashboard_atts', JSON.stringify(attData));
-        }
+        const fetchAttendances = fetch(`${API_URL}/attendance?scope=all&tanggal=${today}`, { headers })
+          .then(res => res.ok ? res.json() : Promise.reject(res))
+          .then(attData => {
+            setAttendances(attData);
+            localStorage.setItem('cached_dashboard_atts', JSON.stringify(attData));
+          })
+          .catch(err => console.error("Gagal load attendances", err));
+
+        // Tunggu semua request selesai
+        await Promise.all([fetchClassrooms, fetchStudents, fetchAttendances]);
+
       } catch (error) {
         console.error("Gagal memperbarui data dashboard", error);
       } finally {
