@@ -156,12 +156,16 @@ const ManajemenAkun = () => {
     }
   };
 
-  // --- EDIT USER ROLE & KELAS BINAAN & SUMBER AKUN ---
   const handleOpenEdit = (acc) => {
     setSelectedEditUser(acc);
-    setEditRole(acc.role || 'guru_piket');
+    
+    // Pastikan role yang di-set ada di pilihan dropdown untuk menghindari validation error dari backend
+    const validRoles = ['guru_piket', 'admin', 'sarpras'];
+    setEditRole(validRoles.includes(acc.role) ? acc.role : 'guru_piket');
+    
     setEditClassroomId(acc.classroom_id || '');
-    setEditAppSource(acc.app_source || 'absensi');
+    const validSources = ['absensi', 'storing'];
+    setEditAppSource(validSources.includes(acc.app_source) ? acc.app_source : 'absensi');
     setEditNrg(acc.nrg && acc.nrg !== '-' ? acc.nrg : '');
     setShowEditModal(true);
     if (classrooms.length === 0) {
@@ -194,7 +198,14 @@ const ManajemenAkun = () => {
         setShowEditModal(false);
         fetchDataAkun();
       } else {
-        alert("Gagal meng-update akun.");
+        const errorData = await response.json().catch(() => ({}));
+        let errorMessage = "Gagal meng-update akun.";
+        if (errorData.errors) {
+            errorMessage = Object.values(errorData.errors).flat().join('\n');
+        } else if (errorData.message) {
+            errorMessage = errorData.message;
+        }
+        alert(errorMessage);
       }
     } catch (error) {
       console.error("Terjadi kesalahan koneksi", error);
