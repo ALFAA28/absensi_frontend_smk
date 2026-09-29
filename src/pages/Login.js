@@ -107,7 +107,7 @@ const Login = () => {
 
         {error && <div className="error-message">{error}</div>}
 
-        <form>
+        <form onSubmit={(e) => handleLogin(e, 'absensi')}>
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <div className="input-icon-wrapper">
@@ -153,9 +153,8 @@ const Login = () => {
           </div>
 
           <button 
-            type="button" 
+            type="submit" 
             className="btn-login" 
-            onClick={(e) => handleLogin(e, 'absensi')}
             disabled={isLoading}
           >
             {isLoading && loginTarget === 'absensi' ? (

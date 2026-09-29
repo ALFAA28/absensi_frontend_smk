@@ -78,7 +78,7 @@ const LoginStoring = () => {
 
         {error && <div className="error-message">{error}</div>}
 
-        <form>
+        <form onSubmit={handleLogin}>
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <div className="input-icon-wrapper">
@@ -124,10 +124,9 @@ const LoginStoring = () => {
           </div>
 
           <button
-            type="button"
+            type="submit"
             className="btn-login"
             style={{ backgroundColor: '#4f46e5' }}
-            onClick={handleLogin}
             disabled={isLoading}
           >
             {isLoading ? (
