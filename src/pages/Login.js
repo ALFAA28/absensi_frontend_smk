@@ -31,7 +31,7 @@ const Login = () => {
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 detik timeout
+      const timeoutId = setTimeout(() => controller.abort(), 80000); // 80 detik timeout untuk cold start Render
 
       const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
