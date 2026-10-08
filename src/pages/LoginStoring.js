@@ -25,8 +25,12 @@ const LoginStoring = () => {
     setIsLoading(true);
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 detik timeout
+
       const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
+        signal: controller.signal,
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -37,6 +41,8 @@ const LoginStoring = () => {
           app_source: 'storing'
         })
       });
+
+      clearTimeout(timeoutId);
 
       const data = await response.json();
 

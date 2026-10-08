@@ -30,8 +30,12 @@ const Login = () => {
     setLoginTarget(target);
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 detik timeout
+
       const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
+        signal: controller.signal,
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -42,6 +46,8 @@ const Login = () => {
           app_source: target
         })
       });
+
+      clearTimeout(timeoutId);
 
       const data = await response.json();
 
