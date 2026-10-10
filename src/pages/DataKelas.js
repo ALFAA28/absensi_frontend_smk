@@ -899,6 +899,24 @@ const DataKelas = () => {
                 const ws = workbook.Sheets[wsname];
                 const data = XLSX.utils.sheet_to_json(ws);
 
+                if (data.length === 0) {
+                    toast.error("File Excel kosong!");
+                    e.target.value = null;
+                    return;
+                }
+
+                // Validasi nama kolom
+                const firstRowKeys = Object.keys(data[0]).map(k => k.toLowerCase().trim());
+                const isValidFormat = firstRowKeys.includes('nama') && 
+                                      firstRowKeys.includes('nisn') && 
+                                      firstRowKeys.includes('kelas');
+
+                if (!isValidFormat) {
+                    toast.error("Gagal mengimport format data tidak sesuai atau nama kolom tidak sesuai format (nama, kelas dan nisn)");
+                    e.target.value = null;
+                    return;
+                }
+
                 const studentsPayload = data.map(item => ({
                     nisn: String(item.NISN || item.nisn || ''),
                     name: item.Nama || item.nama || 'Tanpa Nama',
