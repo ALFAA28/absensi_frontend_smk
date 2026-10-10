@@ -27,6 +27,9 @@ api.interceptors.request.use(
   }
 );
 
+// Flag untuk mencegah multiple redirect secara bersamaan
+let isRedirecting = false;
+
 // Interceptor Response: Menangkap error seperti sesi habis (401 Unauthorized)
 api.interceptors.response.use(
   (response) => {
@@ -34,10 +37,35 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Jika backend merespon 401 (Tidak Diizinkan), 
-      // hapus token dan tendang user ke halaman login
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+      // Jangan redirect berulang kali jika sudah dalam proses redirect
+      if (!isRedirecting) {
+        isRedirecting = true;
+
+        // Jika backend merespon 401 (Tidak Diizinkan / Token Expired), 
+        // hapus semua data sesi dan tendang user ke halaman login
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('appSource');
+        localStorage.removeItem('classroomId');
+        localStorage.removeItem('cached_angkatan');
+        localStorage.removeItem('cached_classrooms');
+        localStorage.removeItem('cached_students');
+        localStorage.removeItem('cached_dashboard_atts');
+        localStorage.removeItem('cached_mapel');
+        localStorage.removeItem('cached_laporan');
+
+        // Hanya redirect jika belum di halaman login
+        const currentPath = window.location.pathname;
+        if (currentPath !== '/login' && currentPath !== '/login-storing') {
+          window.location.href = '/login';
+        }
+
+        // Reset flag setelah beberapa detik
+        setTimeout(() => {
+          isRedirecting = false;
+        }, 3000);
+      }
     }
     return Promise.reject(error);
   }
