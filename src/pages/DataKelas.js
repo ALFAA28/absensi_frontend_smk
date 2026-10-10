@@ -921,7 +921,11 @@ const DataKelas = () => {
                     toast.success(resData.message || `Berhasil mengimpor ${studentsPayload.length} data siswa!`);
                     fetchAllData();
                 } else {
-                    toast.error(resData.message || "Gagal mengimpor siswa.");
+                    toast.error(
+                        <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.4' }}>
+                            {resData.message || "Gagal mengimpor siswa."}
+                        </div>
+                    );
                 }
             } catch (error) {
                 toast.error("Gagal membaca file Excel. Pastikan format file benar!");
@@ -1380,11 +1384,27 @@ const DataKelas = () => {
                                     <FiSearch className="search-icon" />
                                     <input type="text" placeholder="Cari..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                                 </div>
-                                <div>
+                                <div style={{ display: 'flex', gap: '8px' }}>
                                     <input type="file" id="excel-upload" accept=".xlsx, .xls" style={{ display: 'none' }} onChange={handleFileUpload} />
-                                    <label htmlFor="excel-upload" className="btn-import" style={{ cursor: 'pointer' }}>
+                                    <label htmlFor="excel-upload" className="btn-import" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
                                         Import Excel
                                     </label>
+                                    <button 
+                                        className="btn-action" 
+                                        onClick={() => {
+                                            const worksheet = XLSX.utils.json_to_sheet([
+                                                { NISN: "1234567890", Nama: "Contoh Siswa 1" },
+                                                { NISN: "0987654321", Nama: "Contoh Siswa 2" }
+                                            ]);
+                                            const workbook = XLSX.utils.book_new();
+                                            XLSX.utils.book_append_sheet(workbook, worksheet, "Template Siswa");
+                                            XLSX.writeFile(workbook, "Template_Import_Siswa.xlsx");
+                                        }} 
+                                        style={{ marginLeft: '4px', backgroundColor: 'var(--info-color)', color: 'white', border: 'none', padding: '8px 16px', borderRadius: 'var(--radius-md)', cursor: 'pointer', fontSize: '13px', fontWeight: '500' }}
+                                        title="Unduh Template Excel"
+                                    >
+                                        Unduh Template
+                                    </button>
                                 </div>
                                 <button className="btn-add" onClick={handleCetakDataSiswaJurusan}>
                                     Cetak Data Siswa
