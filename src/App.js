@@ -16,6 +16,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FiMenu } from 'react-icons/fi';
 import './App.css';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -72,6 +73,8 @@ function App() {
         draggable
         pauseOnHover
       />
+      {/* Tambahkan baris ini */}
+      <Analytics />
     </Router>
   );
 }
