@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaSignInAlt, FaEye, FaEyeSlash } from 'react-icons/fa';
 import './Login.css';
 import { API_URL } from '../config';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,6 +15,7 @@ const Login = () => {
   const [loginTarget, setLoginTarget] = useState(null);
 
   const navigate = useNavigate();
+  const { markAsAuthenticated } = useAuth();
 
   const searchParams = new URLSearchParams(window.location.search);
   const redirectUrl = searchParams.get('redirect');
@@ -81,7 +83,10 @@ const Login = () => {
         }
 
         // JIKA TARGET 'absensi', abaikan redirectUrl dan tetap di Absensi
-        // 3. Arahkan pengguna berdasarkan rolenya (Flow Biasa Absensi)
+        // 3. Tandai sebagai authenticated di AuthContext
+        markAsAuthenticated();
+
+        // 4. Arahkan pengguna berdasarkan rolenya (Flow Biasa Absensi)
         if (data.user.role === 'sarpras') {
           navigate('/inventaris-barang', { replace: true });
         } else {

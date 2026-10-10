@@ -15,6 +15,14 @@ export const AuthProvider = ({ children }) => {
   const location = useLocation();
   const lastCheckRef = useRef(0);
 
+  // Fungsi untuk menandai bahwa user sudah berhasil login
+  // Dipanggil dari halaman Login setelah token disimpan ke localStorage
+  const markAsAuthenticated = useCallback(() => {
+    setIsAuthenticated(true);
+    setIsChecking(false);
+    lastCheckRef.current = Date.now();
+  }, []);
+
   // Fungsi untuk logout dan redirect ke halaman login
   const forceLogout = useCallback((message = 'Sesi Anda telah berakhir. Silakan login kembali.') => {
     // Hapus semua data sesi dari localStorage
@@ -195,6 +203,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     isAuthenticated,
     isChecking,
+    markAsAuthenticated,
     forceLogout,
     verifyToken,
   };
