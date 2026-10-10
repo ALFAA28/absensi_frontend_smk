@@ -921,11 +921,7 @@ const DataKelas = () => {
                     toast.success(resData.message || `Berhasil mengimpor ${studentsPayload.length} data siswa!`);
                     fetchAllData();
                 } else {
-                    toast.error(
-                        <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.4' }}>
-                            {resData.message || "Gagal mengimpor siswa."}
-                        </div>
-                    );
+                    toast.error(resData.message || "Gagal mengimpor siswa.");
                 }
             } catch (error) {
                 toast.error("Gagal membaca file Excel. Pastikan format file benar!");
@@ -1390,22 +1386,6 @@ const DataKelas = () => {
                                         Import Excel
                                     </label>
                                 </div>
-                                <button 
-                                    className="btn-import" 
-                                    onClick={() => {
-                                        const worksheet = XLSX.utils.json_to_sheet([
-                                            { NISN: "1234567890", Nama: "Contoh Siswa 1" },
-                                            { NISN: "0987654321", Nama: "Contoh Siswa 2" }
-                                        ]);
-                                        const workbook = XLSX.utils.book_new();
-                                        XLSX.utils.book_append_sheet(workbook, worksheet, "Template Siswa");
-                                        XLSX.writeFile(workbook, "Template_Import_Siswa.xlsx");
-                                    }} 
-                                    title="Unduh Template Excel"
-                                    style={{ border: 'none', cursor: 'pointer' }}
-                                >
-                                    Unduh Template
-                                </button>
                                 <button className="btn-add" onClick={handleCetakDataSiswaJurusan}>
                                     Cetak Data Siswa
                                 </button>
